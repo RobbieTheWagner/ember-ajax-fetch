@@ -26,6 +26,9 @@ import {
 } from 'ember-ajax-fetch/errors';
 import param from 'jquery-param';
 
+/**
+ * @class FetchService
+ */
 export default class FetchService extends Service {
   /**
    * The default value for the request `contentType`
@@ -38,6 +41,12 @@ export default class FetchService extends Service {
   contentType = 'application/x-www-form-urlencoded; charset=UTF-8';
   method = 'GET';
 
+  /**
+   * @method request
+   * @param {string} url
+   * @param {object} options
+   * @return {Promise<*>}
+   */
   async request(url, options = {}) {
     const requestOptions = {
       method: options.method || this.method,
@@ -111,7 +120,7 @@ export default class FetchService extends Service {
    * Build the URL to pass to `fetch`
    * @param {string} url The base url
    * @param {object} options The options to pass to fetch, query params, headers, etc
-   * @returns {string} The built url
+   * @return {string} The built url
    * @private
    */
   _buildURL(url, options) {
@@ -144,7 +153,7 @@ export default class FetchService extends Service {
    * @param response The response from the fetch call
    * @param payload The response.json() payload
    * @param {object} requestOptions The options object containing headers, method, etc
-   * @param url The url string
+   * @param {string} url The url string
    * @private
    */
   _createCorrectError(response, payload, requestOptions, url) {
@@ -188,7 +197,7 @@ export default class FetchService extends Service {
    * @param response
    * @param {object} requestOptions The options object containing headers, method, etc
    * @param {string} url The url for the request
-   * @returns {*}
+   * @return {*}
    * @private
    */
   _handleResponse(response, requestOptions, url) {

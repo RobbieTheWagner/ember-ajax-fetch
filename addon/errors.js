@@ -56,6 +56,8 @@ export class TimeoutError extends FetchError {
 export class AbortError extends FetchError {
   constructor() {
     super(null, 'The ajax operation was aborted', 0);
+
+    this.name = 'AbortError';
   }
 }
 
@@ -69,4 +71,11 @@ export class ServerError extends FetchError {
   constructor(payload, status) {
     super(payload, 'Request was rejected due to server error', status);
   }
+}
+
+/**
+ * Checks if the given error is or inherits from FetchError
+ */
+export function isFetchError(error) {
+  return error instanceof FetchError;
 }
