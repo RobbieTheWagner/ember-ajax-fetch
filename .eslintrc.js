@@ -18,9 +18,13 @@ module.exports = {
   env: {
     browser: true
   },
+  globals: {
+    FastBoot: false
+  },
   rules: {
     'ember/no-jquery': 'error',
-    'ember/no-new-mixins': 'off'
+    'ember/no-new-mixins': 'off',
+    'no-console': 'off'
   },
   overrides: [
     // node files

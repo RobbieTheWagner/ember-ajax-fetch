@@ -1,5 +1,8 @@
 import Mixin from '@ember/object/mixin';
+import { A } from '@ember/array';
+import { assign } from '@ember/polyfills';
 import { get } from '@ember/object';
+import { isEmpty } from '@ember/utils';
 import fetch from 'fetch';
 import param from 'jquery-param';
 import {
@@ -26,8 +29,11 @@ import {
   ServerError
 } from 'ember-ajax-fetch/errors';
 import {
-  isFullURL
+  haveSameHost,
+  isFullURL,
+  parseURL
 } from 'ember-ajax-fetch/-private/utils/url-helpers';
+import isString from 'ember-ajax-fetch/-private/utils/is-string';
 
 /**
  * @class FetchRequestMixin
@@ -42,7 +48,6 @@ export default Mixin.create({
    * @public
    */
   contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-  method: 'GET',
 
   /**
    * @method request
@@ -51,18 +56,19 @@ export default Mixin.create({
    * @return {Promise<*>}
    */
   async request(url, options = {}) {
+    const hash = this.options(url, options);
+    const method = hash.method || hash.type || 'GET';
     const requestOptions = {
-      method: options.method || this.method,
+      method,
       headers: {
-        'Content-Type': options.contentType || this.contentType,
-        ...(this.headers || {}),
-        ...(options.headers || {})
+        'Content-Type': hash.contentType,
+        ...(hash.headers || {})
       }
     };
 
-    let builtURL = this._buildURL(url, options);
-    if (options.data) {
-      let { data } = options;
+    let builtURL = hash.url;
+    if (hash.data) {
+      let { data } = hash;
 
       if (isJsonString(data)) {
         data = JSON.parse(data);
@@ -83,6 +89,40 @@ export default Mixin.create({
       // TODO: do we want to just throw here or should some errors be okay?
       throw error;
     }
+  },
+
+  /**
+   * Determine whether the headers should be added for this request
+   *
+   * This hook is used to help prevent sending headers to every host, regardless
+   * of the destination, since this could be a security issue if authentication
+   * tokens are accidentally leaked to third parties.
+   *
+   * To avoid that problem, subclasses should utilize the `headers` computed
+   * property to prevent authentication from being sent to third parties, or
+   * implement this hook for more fine-grain control over when headers are sent.
+   *
+   * By default, the headers are sent if the host of the request matches the
+   * `host` property designated on the class.
+   */
+  _shouldSendHeaders({ url, host }) {
+    url = url || '';
+    host = host || get(this, 'host') || '';
+
+    const trustedHosts = get(this, 'trustedHosts') || A();
+    const { hostname } = parseURL(url);
+
+    // Add headers on relative URLs
+    if (!isFullURL(url)) {
+      return true;
+    } else if (
+      trustedHosts.find(matcher => this._matchHosts(hostname, matcher))
+    ) {
+      return true;
+    }
+
+    // Add headers on matching host
+    return haveSameHost(url, host);
   },
 
   /**
@@ -120,6 +160,31 @@ export default Mixin.create({
   },
 
   /**
+   * Created a normalized set of options from the per-request and
+   * service-level settings
+   * @param {string} url
+   * @param {object} options
+   * @return {object}
+   */
+  options(url, options = {}) {
+    options = assign({}, options);
+    options.url = this._buildURL(url, options);
+    options.type = options.type || 'GET';
+    options.dataType = options.dataType || 'json';
+    options.contentType = isEmpty(options.contentType)
+      ? get(this, 'contentType')
+      : options.contentType;
+
+    if (this._shouldSendHeaders(options)) {
+      options.headers = this._getFullHeadersHash(options.headers);
+    } else {
+      options.headers = options.headers || {};
+    }
+
+    return options;
+  },
+
+  /**
    * Build the URL to pass to `fetch`
    * @param {string} url The base url
    * @param {object} options The options to pass to fetch, query params, headers, etc
@@ -135,13 +200,18 @@ export default Mixin.create({
 
     let host = options.host || get(this, 'host');
     if (host) {
-      host = stripSlashes(host);
+      host = endsWithSlash(host) ? removeTrailingSlash(host) : host;
       urlParts.push(host);
     }
 
     let namespace = options.namespace || get(this, 'namespace');
     if (namespace) {
-      namespace = stripSlashes(namespace);
+      // If host is given then we need to strip leading slash too( as it will be added through join)
+      if (host) {
+        namespace = stripSlashes(namespace);
+      } else if (endsWithSlash(namespace)) {
+        namespace = removeTrailingSlash(namespace);
+      }
 
       const hasNamespaceRegex = new RegExp(`^(/)?${stripSlashes(namespace)}/`);
       if (!hasNamespaceRegex.test(url)) {
@@ -204,6 +274,15 @@ export default Mixin.create({
   },
 
   /**
+   * Get the full "headers" hash, combining the service-defined headers with
+   * the ones provided for the request
+   */
+  _getFullHeadersHash(headers) {
+    const classHeaders = get(this, 'headers');
+    return assign({}, classHeaders, headers);
+  },
+
+  /**
    * Return the response or handle the error
    * @param response
    * @param {object} requestOptions The options object containing headers, method, etc
@@ -217,6 +296,31 @@ export default Mixin.create({
       return payload;
     } else {
       throw this._createCorrectError(response, payload, requestOptions, url);
+    }
+  },
+
+  /**
+   * Match the host to a provided array of strings or regexes that can match to a host
+   * @param {string|undefined} host
+   * @param {string} matcher
+   * @private
+   */
+  _matchHosts(host, matcher) {
+    if (!isString(host)) {
+      return false;
+    }
+
+    if (matcher instanceof RegExp) {
+      return matcher.test(host);
+    } else if (typeof matcher === 'string') {
+      return matcher === host;
+    } else {
+      console.warn(
+        'trustedHosts only handles strings or regexes. ',
+        matcher,
+        ' is neither.'
+      );
+      return false;
     }
   }
 });
@@ -242,6 +346,10 @@ function removeLeadingSlash(string) {
   return string.substring(1);
 }
 
+function removeTrailingSlash(string) {
+  return string.slice(0, -1);
+}
+
 function stripSlashes(path) {
   // make sure path starts with `/`
   if (startsWithSlash(path)) {
@@ -250,7 +358,7 @@ function stripSlashes(path) {
 
   // remove end `/`
   if (endsWithSlash(path)) {
-    path = path.slice(0, -1);
+    path = removeTrailingSlash(path);
   }
   return path;
 }
