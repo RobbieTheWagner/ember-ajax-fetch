@@ -1,8 +1,15 @@
+/* eslint-disable ember/avoid-leaking-state-in-ember-objects */
+import { A } from '@ember/array';
 import FetchRequest from 'ember-ajax-fetch/fetch-request';
 import Pretender from 'pretender';
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
+import td from 'testdouble';
 import { jsonResponse } from 'dummy/tests/helpers/json';
+
+const {
+  matchers: { anything, contains: matchContains }
+} = td;
 
 module('Unit | Mixin | fetch-request', function(hooks) {
   setupTest(hooks);
@@ -287,6 +294,339 @@ module('Unit | Mixin | fetch-request', function(hooks) {
 
         assert.equal(options.type, 'GET');
       });
+    });
+  });
+
+  test('can override the default `contentType` for the service', function(assert) {
+    const defaultContentType = 'application/json';
+
+    class FetchServiceWithDefaultContentType extends FetchRequest {
+      get contentType() {
+        return defaultContentType;
+      }
+    }
+
+    const service = FetchServiceWithDefaultContentType.create();
+    const options = service.options('');
+    assert.equal(options.contentType, defaultContentType);
+  });
+
+  test('post() response.post === options.data.post', function(assert) {
+    const service = FetchRequest.create();
+    const url = '/posts';
+    const title = 'Title';
+    const description = 'Some description.';
+    const options = {
+      data: {
+        post: { title, description }
+      }
+    };
+    const serverResponse = [
+      200,
+      { 'Content-Type': 'application/json' },
+      JSON.stringify(options.data)
+    ];
+
+    this.server.post(url, () => serverResponse);
+
+    const postPromise = service.post(url, options);
+
+    return postPromise.then(function(response) {
+      assert.deepEqual(response.post, options.data.post);
+    });
+  });
+
+  test('put() response.post === options.data.post', function(assert) {
+    const service = FetchRequest.create();
+    const url = '/posts/1';
+    const title = 'Title';
+    const description = 'Some description.';
+    const id = 1;
+    const options = {
+      data: {
+        post: { id, title, description }
+      }
+    };
+
+    const serverResponse = [
+      200,
+      { 'Content-Type': 'application/json' },
+      JSON.stringify(options.data)
+    ];
+
+    this.server.put(url, () => serverResponse);
+
+    const putPromise = service.put(url, options);
+
+    return putPromise.then(function(response) {
+      assert.deepEqual(response.post, options.data.post);
+    });
+  });
+
+  test('patch() response.post === options.data.post', function(assert) {
+    const service = FetchRequest.create();
+    const url = '/posts/1';
+    const description = 'Some description.';
+    const options = {
+      data: {
+        post: { description }
+      }
+    };
+
+    const serverResponse = [
+      200,
+      { 'Content-Type': 'application/json' },
+      JSON.stringify(options.data)
+    ];
+
+    this.server.patch(url, () => serverResponse);
+
+    const patchPromise = service.patch(url, options);
+
+    return patchPromise.then(function(response) {
+      assert.deepEqual(response.post, options.data.post);
+    });
+  });
+
+  test('del() response is {}', function(assert) {
+    const service = FetchRequest.create();
+    const url = '/posts/1';
+    const serverResponse = [
+      200,
+      { 'Content-Type': 'application/json' },
+      JSON.stringify({})
+    ];
+
+    this.server.delete(url, () => serverResponse);
+
+    const delPromise = service.del(url);
+
+    return delPromise.then(function(response) {
+      assert.deepEqual(response, {});
+    });
+  });
+
+  test('delete() response is {}', function(assert) {
+    const service = FetchRequest.create();
+    const url = '/posts/1';
+    const serverResponse = [
+      200,
+      { 'Content-Type': 'application/json' },
+      JSON.stringify({})
+    ];
+
+    this.server.delete(url, () => serverResponse);
+
+    const deletePromise = service.delete(url);
+
+    return deletePromise.then(function(response) {
+      assert.deepEqual(response, {});
+    });
+  });
+
+  test('request with method option makes the correct type of request', function(assert) {
+    const url = '/posts/1';
+    const serverResponse = [
+      200,
+      { 'Content-Type': 'application/json' },
+      JSON.stringify({})
+    ];
+
+    this.server.get(url, () => {
+      throw new Error('Shouldn\'t make an AJAX request');
+    });
+    this.server.post(url, () => serverResponse);
+
+    const service = FetchRequest.create();
+    const _handleResponse = td.function('handle response');
+    const expectedArguments = [
+      anything(),
+      matchContains({ method: 'POST' }),
+      anything()
+    ];
+    service._handleResponse = _handleResponse;
+    td.when(_handleResponse(...expectedArguments)).thenReturn({});
+
+    return service.request(url, { method: 'POST' }).then(() => {
+      assert.verify(_handleResponse(...expectedArguments));
+    });
+  });
+
+  module('explicit host in URL', function() {
+    test('overrides host property of class', function(assert) {
+      const RequestWithHost = FetchRequest.extend({
+        host: 'https://discuss.emberjs.com'
+      });
+
+      const service = RequestWithHost.create();
+      const url = 'http://myurl.com/users/me';
+      const options = service.options(url);
+
+      assert.equal(options.url, 'http://myurl.com/users/me');
+    });
+
+    test('overrides host property in request config', function(assert) {
+      const service = FetchRequest.create();
+      const host = 'https://discuss.emberjs.com';
+      const url = 'http://myurl.com/users/me';
+      const options = service.options(url, { host });
+
+      assert.equal(options.url, 'http://myurl.com/users/me');
+    });
+
+    test('without a protocol does not override config property', function(assert) {
+      const RequestWithHost = FetchRequest.extend({
+        host: 'https://discuss.emberjs.com'
+      });
+
+      const service = RequestWithHost.create();
+      const url = 'myurl.com/users/me';
+      const options = service.options(url);
+
+      assert.equal(options.url,
+        'https://discuss.emberjs.com/myurl.com/users/me'
+      );
+    });
+  });
+
+  module('headers', function() {
+    test('is set if the URL matches the host', function(assert) {
+      this.server.get('http://example.com/test', req => {
+        const { requestHeaders } = req;
+        assert.equal(requestHeaders['content-type'], 'application/json');
+        assert.equal(requestHeaders['other-key'], 'Other Value');
+        return jsonResponse();
+      });
+
+      const RequestWithHeaders = FetchRequest.extend({
+        host: 'http://example.com',
+        headers: {
+          'Content-Type': 'application/json',
+          'Other-key': 'Other Value'
+        }
+      });
+
+      const service = RequestWithHeaders.create();
+      return service.request('http://example.com/test');
+    });
+
+    test('is set if the URL is relative', function(assert) {
+      this.server.get('/some/relative/url', req => {
+        const { requestHeaders } = req;
+        assert.equal(requestHeaders['content-type'], 'application/json');
+        assert.equal(requestHeaders['other-key'], 'Other Value');
+        return jsonResponse();
+      });
+
+      const RequestWithHeaders = FetchRequest.extend({
+        headers: {
+          'Content-Type': 'application/json',
+          'Other-key': 'Other Value'
+        }
+      });
+
+      const service = RequestWithHeaders.create();
+      return service.request('/some/relative/url');
+    });
+
+    test('is set if the URL matches one of the RegExp trustedHosts', function(assert) {
+      this.server.get('http://my.example.com', req => {
+        const { requestHeaders } = req;
+        assert.equal(requestHeaders['other-key'], 'Other Value');
+        return jsonResponse();
+      });
+
+      const RequestWithHeaders = FetchRequest.extend({
+        host: 'some-other-host.com',
+        trustedHosts: A([4, 'notmy.example.com', /example\./]),
+        headers: {
+          'Content-Type': 'application/json',
+          'Other-key': 'Other Value'
+        }
+      });
+
+      const service = RequestWithHeaders.create();
+      return service.request('http://my.example.com');
+    });
+
+    test('is set if the URL matches one of the string trustedHosts', function(assert) {
+      this.server.get('http://foo.bar.com', req => {
+        const { requestHeaders } = req;
+        assert.equal(requestHeaders['other-key'], 'Other Value');
+        return jsonResponse();
+      });
+
+      const RequestWithHeaders = FetchRequest.extend({
+        host: 'some-other-host.com',
+        trustedHosts: A(['notmy.example.com', /example\./, 'foo.bar.com']),
+        headers: {
+          'Content-Type': 'application/json',
+          'Other-key': 'Other Value'
+        }
+      });
+
+      const service = RequestWithHeaders.create();
+      return service.request('http://foo.bar.com');
+    });
+
+    test('is not set if the URL does not match the host', function(assert) {
+      this.server.get('http://example.com', req => {
+        const { requestHeaders } = req;
+        assert.notEqual(requestHeaders['other-key'], 'Other Value');
+        return jsonResponse();
+      });
+
+      const RequestWithHeaders = FetchRequest.extend({
+        host: 'some-other-host.com',
+        headers: {
+          'Content-Type': 'application/json',
+          'Other-key': 'Other Value'
+        }
+      });
+
+      const service = RequestWithHeaders.create();
+      return service.request('http://example.com');
+    });
+
+    test('can be supplied on a per-request basis', function(assert) {
+      this.server.get('http://example.com', req => {
+        const { requestHeaders } = req;
+        assert.equal(requestHeaders['per-request-key'], 'Some value');
+        assert.equal(requestHeaders['other-key'], 'Other Value');
+        return jsonResponse();
+      });
+
+      const RequestWithHeaders = FetchRequest.extend({
+        host: 'http://example.com',
+        headers: {
+          'Content-Type': 'application/json',
+          'Other-key': 'Other Value'
+        }
+      });
+
+      const service = RequestWithHeaders.create();
+      return service.request('http://example.com', {
+        headers: {
+          'Per-Request-Key': 'Some value'
+        }
+      });
+    });
+
+    test('can get the full list from class and request options', function(assert) {
+      const RequestWithHeaders = FetchRequest.extend({
+        headers: {
+          'Content-Type': 'application/vnd.api+json',
+          'Other-Value': 'Some Value'
+        }
+      });
+
+      const service = RequestWithHeaders.create();
+      const headers = { 'Third-Value': 'Other Thing' };
+      assert.equal(Object.keys(service._getFullHeadersHash()).length, 2);
+      assert.equal(Object.keys(service._getFullHeadersHash(headers)).length,
+        3
+      );
+      assert.equal(Object.keys(service.headers).length, 2);
     });
   });
 
