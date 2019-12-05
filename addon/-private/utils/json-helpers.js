@@ -1,3 +1,12 @@
+export function isJsonString(str) {
+  try {
+    const json = JSON.parse(str);
+    return (typeof json === 'object');
+  } catch(e) {
+    return false;
+  }
+}
+
 /**
  * Parses the JSON returned by a network request
  *
@@ -33,6 +42,12 @@ export async function parseJSON(response) {
         }
       })
       .catch((err) => {
+        if (isJsonString(error.message)) {
+          error.payload = JSON.parse(error.message);
+        } else {
+          error.payload = error.message || err.toString();
+        }
+
         error.message = error.message || err.toString();
 
         return resolve(error);

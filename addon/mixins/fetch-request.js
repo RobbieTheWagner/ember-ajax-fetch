@@ -35,7 +35,7 @@ import {
   parseURL
 } from 'ember-ajax-fetch/-private/utils/url-helpers';
 import isString from 'ember-ajax-fetch/-private/utils/is-string';
-import { parseJSON } from 'ember-ajax-fetch/-private/utils/json-helpers';
+import { isJsonString, parseJSON } from 'ember-ajax-fetch/-private/utils/json-helpers';
 
 /**
  * @class FetchRequestMixin
@@ -375,7 +375,7 @@ export default Mixin.create({
     if (response.ok) {
       return response.json;
     } else {
-      throw this._createCorrectError(response, response, requestOptions, url);
+      throw this._createCorrectError(response, response.payload, requestOptions, url);
     }
   },
 
@@ -404,15 +404,6 @@ export default Mixin.create({
     }
   }
 });
-
-function isJsonString(str) {
-  try {
-    const json = JSON.parse(str);
-    return (typeof json === 'object');
-  } catch(e) {
-    return false;
-  }
-}
 
 function startsWithSlash(string) {
   return string.charAt(0) === '/';

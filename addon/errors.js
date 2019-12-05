@@ -79,3 +79,10 @@ export class ServerError extends FetchError {
 export function isFetchError(error) {
   return error instanceof FetchError;
 }
+
+/**
+ * Checks if the given object represents a "timeout" error
+ */
+export function isTimeoutError(error) {
+  return error instanceof TimeoutError;
+}

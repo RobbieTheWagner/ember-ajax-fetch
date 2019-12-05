@@ -1,11 +1,22 @@
 /* eslint-disable ember/avoid-leaking-state-in-ember-objects */
 import { A } from '@ember/array';
+import { typeOf } from '@ember/utils';
 import FetchRequest from 'ember-ajax-fetch/fetch-request';
 import Pretender from 'pretender';
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import td from 'testdouble';
-import { jsonResponse } from 'dummy/tests/helpers/json';
+import { jsonFactory, jsonResponse } from 'dummy/tests/helpers/json';
+// import { isTimeoutError } from 'ember-ajax-fetch/errors';
+import {
+  UnauthorizedError,
+  InvalidError,
+  ForbiddenError,
+  BadRequestError,
+  GoneError,
+  ConflictError,
+  ServerError
+} from 'ember-ajax-fetch/errors';
 
 const {
   matchers: { anything, contains: matchContains }
@@ -976,5 +987,60 @@ module('Unit | Mixin | fetch-request', function(hooks) {
         );
       });
     });
+  });
+
+  module('error handlers', function() {
+    // test('handles a TimeoutError correctly', function(assert) {
+    //   this.server.get('/posts', jsonFactory(200), 2);
+    //   const service = FetchRequest.create();
+    //   return service
+    //     .request('/posts', { timeout: 1 })
+    //     .then(function() {
+    //       throw new Error('success handler should not be called');
+    //     })
+    //     .catch(function(reason) {
+    //       assert.ok(isTimeoutError(reason));
+    //       assert.equal(reason.payload, null);
+    //       assert.equal(reason.status, -1);
+    //     });
+    // });
+
+    function errorHandlerTest(status, errorClass) {
+      test(`handles a ${status} response correctly and preserves the payload`, function(assert) {
+        this.server.get(
+          '/posts',
+          jsonFactory(status, {
+            errors: [{ id: 1, message: 'error description' }]
+          })
+        );
+        const service = FetchRequest.create();
+        return service
+          .request('/posts')
+          .then(function() {
+            throw new Error('success handler should not be called');
+          })
+          .catch(function(reason) {
+            assert.ok(reason instanceof errorClass);
+            assert.ok(reason.payload !== undefined);
+            assert.equal(reason.status, status);
+
+            const { errors } = reason.payload;
+
+            assert.ok(errors && typeOf(errors) === 'array');
+            assert.equal(errors[0].id, 1);
+            assert.equal(errors[0].message, 'error description');
+          });
+      });
+    }
+
+    errorHandlerTest(401, UnauthorizedError);
+    errorHandlerTest(403, ForbiddenError);
+    errorHandlerTest(409, ConflictError);
+    errorHandlerTest(410, GoneError);
+    errorHandlerTest(422, InvalidError);
+    errorHandlerTest(400, BadRequestError);
+    errorHandlerTest(500, ServerError);
+    errorHandlerTest(502, ServerError);
+    errorHandlerTest(510, ServerError);
   });
 });
