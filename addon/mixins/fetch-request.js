@@ -156,7 +156,7 @@ export default Mixin.create({
     const payloadDescription = `Payload (${payloadContentType})`;
 
     return [
-      `Ember Fetch Extended Request ${requestDescription} returned a ${status}`,
+      `Ember Ajax Fetch Request ${requestDescription} returned a ${status}`,
       payloadDescription,
       shortenedPayload
     ].join('\n');

@@ -5,8 +5,19 @@
  *
  * @return {object}          The parsed JSON, status from the response
  */
-export function parseJSON(response) {
-  return new Promise((resolve, reject) => {
+export async function parseJSON(response) {
+  let error;
+
+  if (!response.ok) {
+    const errorBody = await response.text();
+    error = {
+      message: errorBody,
+      status: response.status,
+      statusText: response.statusText
+    };
+  }
+
+  return new Promise((resolve) => {
     return response.json()
       .then((json) => {
         if (response.ok) {
@@ -16,22 +27,15 @@ export function parseJSON(response) {
             json
           });
         } else {
-          const error = Object.assign({}, json, {
-            status: response.status,
-            statusText: response.statusText
-          });
+          error = Object.assign({}, json, error);
 
-          return reject(error);
+          return resolve(error);
         }
       })
       .catch((err) => {
-        const error = {
-          message: err.toString(),
-          status: response.status,
-          statusText: response.statusText,
-        };
+        error.message = error.message || err.toString();
 
-        return reject(error);
+        return resolve(error);
       });
   });
 }

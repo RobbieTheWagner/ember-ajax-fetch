@@ -630,6 +630,187 @@ module('Unit | Mixin | fetch-request', function(hooks) {
     });
   });
 
+  test('it creates a detailed error message for unmatched server errors with an AJAX payload', function(assert) {
+    const response = [
+      408,
+      { 'Content-Type': 'application/json' },
+      JSON.stringify({ errors: ['Some error response'] })
+    ];
+    this.server.get('/posts', () => response);
+
+    const service = FetchRequest.create();
+    return service
+      .request('/posts')
+      .then(function() {
+        throw new Error('success handler should not be called');
+      })
+      .catch(function(result) {
+        assert.ok(result.message.includes('Some error response'));
+        assert.ok(result.message.includes('GET'));
+        assert.ok(result.message.includes('/posts'));
+        assert.equal(result.status, 408);
+      });
+  });
+
+  test('it creates a detailed error message for unmatched server errors with a text payload', function(assert) {
+    const response = [
+      408,
+      { 'Content-Type': 'text/html' },
+      'Some error response'
+    ];
+    this.server.get('/posts', () => response);
+
+    const service = FetchRequest.create();
+    return service
+      .request('/posts')
+      .then(function() {
+        throw new Error('success handler should not be called');
+      })
+      .catch(function(result) {
+        assert.ok(result.message.includes('Some error response'));
+        assert.ok(result.message.includes('GET'));
+        assert.ok(result.message.includes('/posts'));
+        assert.equal(result.status, 408);
+      });
+  });
+
+  test('it throws an error when the user tries to use `.get` to make a request', function(assert) {
+    const service = FetchRequest.create();
+    service.set('someProperty', 'foo');
+
+    assert.equal(service.get('someProperty'), 'foo');
+
+    assert.throws(function() {
+      service.get('/users');
+    });
+
+    assert.throws(function() {
+      service.get('/users', {});
+    });
+  });
+
+  test('it JSON encodes JSON request data automatically per contentType', function(assert) {
+    this.server.post('/test', ({ requestBody }) => {
+      const { foo } = JSON.parse(requestBody);
+      assert.equal(foo, 'bar');
+      return jsonResponse();
+    });
+
+    const RequestWithHeaders = FetchRequest.extend({
+      contentType: 'application/json'
+    });
+
+    const service = RequestWithHeaders.create();
+    return service.post('/test', {
+      data: {
+        foo: 'bar'
+      }
+    });
+  });
+
+  test('it JSON encodes JSON:API request data automatically per contentType', function(assert) {
+    this.server.post('/test', ({ requestBody }) => {
+      const { foo } = JSON.parse(requestBody);
+      assert.equal(foo, 'bar');
+      return jsonResponse();
+    });
+
+    const RequestWithHeaders = FetchRequest.extend({
+      contentType: 'application/vnd.api+json'
+    });
+
+    const service = RequestWithHeaders.create();
+    return service.post('/test', {
+      data: {
+        foo: 'bar'
+      }
+    });
+  });
+
+  test('it JSON encodes JSON request data automatically per Content-Type header', function(assert) {
+    this.server.post('/test', ({ requestBody }) => {
+      const { foo } = JSON.parse(requestBody);
+      assert.equal(foo, 'bar');
+      return jsonResponse();
+    });
+
+    const RequestWithHeaders = FetchRequest.extend({
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const service = RequestWithHeaders.create();
+    return service.post('/test', {
+      data: {
+        foo: 'bar'
+      }
+    });
+  });
+
+  test('it JSON encodes JSON:API request data automatically per Content-Type header', function(assert) {
+    this.server.post('/test', ({ requestBody }) => {
+      const { foo } = JSON.parse(requestBody);
+      assert.equal(foo, 'bar');
+      return jsonResponse();
+    });
+
+    const RequestWithHeaders = FetchRequest.extend({
+      headers: {
+        'Content-Type': 'application/vnd.api+json'
+      }
+    });
+
+    const service = RequestWithHeaders.create();
+    return service.post('/test', {
+      data: {
+        foo: 'bar'
+      }
+    });
+  });
+
+  test('it does not JSON encode query parameters when JSON:API headers are present', function(assert) {
+    this.server.get('/test', ({ queryParams }) => {
+      const { foo } = queryParams;
+      assert.equal(foo, 'bar');
+      return jsonResponse();
+    });
+
+    const RequestWithHeaders = FetchRequest.extend({
+      headers: {
+        'Content-Type': 'application/vnd.api+json'
+      }
+    });
+
+    const service = RequestWithHeaders.create();
+    return service.request('/test', {
+      data: {
+        foo: 'bar'
+      }
+    });
+  });
+
+  test('it JSON encodes JSON:API "extension" request data automatically', function(assert) {
+    this.server.post('/test', ({ requestBody }) => {
+      const { foo } = JSON.parse(requestBody);
+      assert.equal(foo, 'bar');
+      return jsonResponse();
+    });
+
+    const RequestWithHeaders = FetchRequest.extend({
+      headers: {
+        'Content-Type': 'application/vnd.api+json; ext="ext1,ext2"'
+      }
+    });
+
+    const service = RequestWithHeaders.create();
+    return service.post('/test', {
+      data: {
+        foo: 'bar'
+      }
+    });
+  });
+
   module('URL building', function() {
     class NamespaceLeadingSlash extends FetchRequest {
       static get slashType() {
