@@ -4,6 +4,7 @@ import FetchRequest from './fetch-request';
  * Helper function that allows you to use the default `ember-ajax-fetch` to make
  * requests without using the service.
  *
+ * @class request
  * @public
  */
 export default function request(url, options) {

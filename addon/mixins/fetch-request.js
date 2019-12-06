@@ -52,6 +52,7 @@ export default Mixin.create({
   contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
 
   /**
+   * Make a fetch request
    * @method request
    * @param {string} url
    * @param {object} options
@@ -277,9 +278,10 @@ export default Mixin.create({
   },
 
   /**
-   * calls `request()` but forces `options.type` to `POST`
-   * @param {string} url
-   * @param {object} options
+   * Calls `request()` but forces `options.type` to `POST`
+   * @method post
+   * @param {string} url The url for the request
+   * @param {object} options The options object for the request
    * @return {*|Promise<*>}
    */
   post(url, options) {
@@ -287,9 +289,10 @@ export default Mixin.create({
   },
 
   /**
-   * calls `request()` but forces `options.type` to `PUT`
-   * @param {string} url
-   * @param {object} options
+   * Calls `request()` but forces `options.type` to `PUT`
+   * @method put
+   * @param {string} url The url for the request
+   * @param {object} options The options object for the request
    * @return {*|Promise<*>}
    */
   put(url, options) {
@@ -297,9 +300,10 @@ export default Mixin.create({
   },
 
   /**
-   * calls `request()` but forces `options.type` to `PATCH`
-   * @param {string} url
-   * @param {object} options
+   * Calls `request()` but forces `options.type` to `PATCH`
+   * @method patch
+   * @param {string} url The url for the request
+   * @param {object} options The options object for the request
    * @return {*|Promise<*>}
    */
   patch(url, options) {
@@ -307,9 +311,10 @@ export default Mixin.create({
   },
 
   /**
-   * calls `request()` but forces `options.type` to `DELETE`
-   * @param {string} url
-   * @param {object} options
+   * Calls `request()` but forces `options.type` to `DELETE`
+   * @method del
+   * @param {string} url The url for the request
+   * @param {object} options The options object for the request
    * @return {*|Promise<*>}
    */
   del(url, options) {
@@ -317,11 +322,12 @@ export default Mixin.create({
   },
 
   /**
-   * calls `request()` but forces `options.type` to `DELETE`
+   * Calls `request()` but forces `options.type` to `DELETE`
    *
    * Alias for `del()`
-   * @param {string} url
-   * @param {object} options
+   * @method delete
+   * @param {string} url The url for the request
+   * @param {object} options The options object for the request
    * @return {*|Promise<*>}
    */
   delete(url, options) {
@@ -333,8 +339,8 @@ export default Mixin.create({
    *
    * Since `.get` is both an AJAX pattern _and_ an Ember pattern, we want to try
    * to warn users when they try using `.get` to make a request
-   * @param url
-   * @returns {*}
+   * @param {string} url
+   * @return {*}
    */
   get(url) {
     if (arguments.length > 1 || url.indexOf('/') !== -1) {
@@ -357,6 +363,7 @@ export default Mixin.create({
   /**
    * Get the full "headers" hash, combining the service-defined headers with
    * the ones provided for the request
+   * @param {object} headers The headers passed in the options hash
    */
   _getFullHeadersHash(headers) {
     const classHeaders = get(this, 'headers');

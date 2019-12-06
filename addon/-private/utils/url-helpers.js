@@ -13,6 +13,7 @@ const completeUrlRegex = /^(http|https)/;
  *   search: query parameters
  *   hash: the URL hash
  *
+ * @param {string} str
  * @function parseURL
  * @private
  */
@@ -41,10 +42,10 @@ export function parseURL(str) {
 }
 
 /**
- *
+ * Returns true if both `a` and `b` have the same protocol, hostname, and port.
  * @param {string} a
  * @param {string} b
- * @returns {boolean}
+ * @return {boolean}
  */
 export function haveSameHost(a, b) {
   const urlA = parseURL(a);
@@ -58,9 +59,9 @@ export function haveSameHost(a, b) {
 }
 
 /**
- *
+ * Checks if the URL is already a full URL
  * @param {string} url
- * @returns {boolean}
+ * @return {boolean}
  */
 export function isFullURL(url) {
   return !!url.match(completeUrlRegex);
