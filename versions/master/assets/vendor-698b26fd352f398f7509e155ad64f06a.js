@@ -6105,12 +6105,14 @@ case 3:n=i.sent,t={message:n,status:e.status,statusText:e.statusText}
 case 5:return i.abrupt("return",new Promise((function(n){return e.json().then((function(r){return e.ok?n({status:e.status,ok:e.ok,json:r}):(t=Object.assign({},r,t),n(t))})).catch((function(e){return r(t.message)?t.payload=JSON.parse(t.message):t.payload=t.message||e.toString(),t.message=t.message||e.toString(),n(t)}))})))
 case 6:case"end":return i.stop()}}))}})),define("ember-ajax-fetch/-private/utils/url-helpers",["exports"],(function(e){"use strict"
 Object.defineProperty(e,"__esModule",{value:!0}),e.parseURL=r,e.haveSameHost=function(e,t){var n=r(e),i=r(t)
-return n.protocol===i.protocol&&n.hostname===i.hostname&&n.port===i.port},e.isFullURL=function(e){return!!e.match(t)}
+return n.protocol===i.protocol&&n.hostname===i.hostname&&n.port===i.port},e.isFullURL=function(e){return!!e.match(t)},e.startsWithSlash=n,e.endsWithSlash=i,e.removeLeadingSlash=o,e.removeTrailingSlash=a,e.stripSlashes=function(e){n(e)&&(e=o(e))
+i(e)&&(e=a(e))
+return e}
 var t=/^(http|https)/
 function r(e){var t
 if("undefined"==typeof FastBoot){var r=document.createElement("a")
 r.href=e,t=r}else t=FastBoot.require("url").parse(e)
-return{href:t.href,protocol:t.protocol,hostname:t.hostname,port:t.port,pathname:t.pathname,search:t.search,hash:t.hash}}}))
+return{href:t.href,protocol:t.protocol,hostname:t.hostname,port:t.port,pathname:t.pathname,search:t.search,hash:t.hash}}function n(e){return"/"===e.charAt(0)}function i(e){return"/"===e.charAt(e.length-1)}function o(e){return e.substring(1)}function a(e){return e.slice(0,-1)}}))
 define("ember-ajax-fetch/errors",["exports"],(function(e){"use strict"
 function t(e){return(t="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function n(e,r){return!r||"object"!==t(r)&&"function"!=typeof r?function(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
 return e}(e):r}function i(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function")
@@ -6172,11 +6174,11 @@ return["Ember Ajax Fetch Request ".concat(s," returned a ").concat(e),u,o].join(
 return(t=Ember.assign({},t)).url=this._buildURL(e,t),t.type=t.type||"GET",t.dataType=t.dataType||"json",t.contentType=Ember.isEmpty(t.contentType)?Ember.get(this,"contentType"):t.contentType,this._shouldSendHeaders(t)?t.headers=this._getFullHeadersHash(t.headers):t.headers=t.headers||{},t},_buildURL:function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{}
 if((0,o.isFullURL)(e))return e
 var r=[],n=t.host||Ember.get(this,"host")
-n&&(n=h(n)?m(n):n,r.push(n))
+n&&(n=(0,o.endsWithSlash)(n)?(0,o.removeTrailingSlash)(n):n,r.push(n))
 var i=t.namespace||Ember.get(this,"namespace")
-if(i){n?i=v(i):h(i)&&(i=m(i))
-var a=new RegExp("^(/)?".concat(v(i),"/"))
-a.test(e)||r.push(i)}return f(e)&&0!==r.length&&(e=p(e)),r.push(e),r.join("/")},_createCorrectError:function(e,t,r,o){var a
+if(i){n?i=(0,o.stripSlashes)(i):(0,o.endsWithSlash)(i)&&(i=(0,o.removeTrailingSlash)(i))
+var a=new RegExp("^(/)?".concat((0,o.stripSlashes)(i),"/"))
+a.test(e)||r.push(i)}return(0,o.startsWithSlash)(e)&&0!==r.length&&(e=(0,o.removeLeadingSlash)(e)),r.push(e),r.join("/")},_createCorrectError:function(e,t,r,o){var a
 if((0,n.isUnauthorizedResponse)(e))a=new i.UnauthorizedError(t)
 else if((0,n.isForbiddenResponse)(e))a=new i.ForbiddenError(t)
 else if((0,n.isInvalidResponse)(e))a=new i.InvalidError(t)
@@ -6191,7 +6193,7 @@ a=new i.FetchError(t,s,e.status)}return a},post:function(e,t){return this.reques
 return this._super.apply(this,arguments)},_addTypeToOptionsFor:function(e,t){return(e=e||{}).type=t,e},_getFullHeadersHash:function(e){var t=Ember.get(this,"headers")
 return Ember.assign({},t,e)},_handleResponse:function(e,t,r){if(e.ok)return e.json
 throw this._createCorrectError(e,e.payload,t,r)},_matchHosts:function(e,t){return!!(0,a.default)(e)&&(t instanceof RegExp?t.test(e):"string"==typeof t?t===e:(console.warn("trustedHosts only handles strings or regexes. ",t," is neither."),!1))}})
-function f(e){return"/"===e.charAt(0)}function h(e){return"/"===e.charAt(e.length-1)}function p(e){return e.substring(1)}function m(e){return e.slice(0,-1)}function v(e){return f(e)&&(e=p(e)),h(e)&&(e=m(e)),e}e.default=d})),define("ember-ajax-fetch/request",["exports","ember-ajax-fetch/fetch-request"],(function(e,t){"use strict"
+e.default=d})),define("ember-ajax-fetch/request",["exports","ember-ajax-fetch/fetch-request"],(function(e,t){"use strict"
 Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(e,r){return t.default.create().request(e,r)}})),define("ember-ajax-fetch/services/fetch",["exports","ember-ajax-fetch/mixins/fetch-request"],(function(e,t){"use strict"
 Object.defineProperty(e,"__esModule",{value:!0}),e.default=void 0
 var r=Ember.Service.extend(t.default)
