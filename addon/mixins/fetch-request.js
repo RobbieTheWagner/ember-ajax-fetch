@@ -30,9 +30,14 @@ import {
   ServerError
 } from 'ember-ajax-fetch/errors';
 import {
+  endsWithSlash,
   haveSameHost,
   isFullURL,
-  parseURL
+  parseURL,
+  removeLeadingSlash,
+  removeTrailingSlash,
+  startsWithSlash,
+  stripSlashes
 } from 'ember-ajax-fetch/-private/utils/url-helpers';
 import isString from 'ember-ajax-fetch/-private/utils/is-string';
 import { isJsonString, parseJSON } from 'ember-ajax-fetch/-private/utils/json-helpers';
@@ -54,8 +59,8 @@ export default Mixin.create({
   /**
    * Make a fetch request
    * @method request
-   * @param {string} url
-   * @param {object} options
+   * @param {string} url The url for the request
+   * @param {object} options The options hash for the request
    * @return {Promise<*>}
    */
   async request(url, options = {}) {
@@ -108,6 +113,10 @@ export default Mixin.create({
    *
    * By default, the headers are sent if the host of the request matches the
    * `host` property designated on the class.
+   *
+   * @method _shouldSendHeaders
+   * @return {boolean|*}
+   * @private
    */
   _shouldSendHeaders({ url, host }) {
     url = url || '';
@@ -166,8 +175,9 @@ export default Mixin.create({
   /**
    * Created a normalized set of options from the per-request and
    * service-level settings
-   * @param {string} url
-   * @param {object} options
+   * @method options
+   * @param {string} url The url for the request
+   * @param {object} options The options hash for the request
    * @return {object}
    */
   options(url, options = {}) {
@@ -190,6 +200,7 @@ export default Mixin.create({
 
   /**
    * Build the URL to pass to `fetch`
+   * @method _buildURL
    * @param {string} url The base url
    * @param {object} options The options to pass to fetch, query params, headers, etc
    * @return {string} The built url
@@ -235,8 +246,9 @@ export default Mixin.create({
 
   /**
    * Return the correct error type
-   * @param response The response from the fetch call
-   * @param payload The response.json() payload
+   * @method _createCorrectError
+   * @param {object} response The response from the fetch call
+   * @param {*} payload The response.json() payload
    * @param {object} requestOptions The options object containing headers, method, etc
    * @param {string} url The url string
    * @private
@@ -353,6 +365,11 @@ export default Mixin.create({
 
   /**
    * Manipulates the options hash to include the HTTP method on the type key
+   * @method _addTypeOptionsFor
+   * @param {object} options The request options hash
+   * @param {string} method The type of request. GET, POST, etc
+   * @return {*|{}}
+   * @private
    */
   _addTypeToOptionsFor(options, method) {
     options = options || {};
@@ -363,7 +380,9 @@ export default Mixin.create({
   /**
    * Get the full "headers" hash, combining the service-defined headers with
    * the ones provided for the request
+   * @method _getFullHeadersHash
    * @param {object} headers The headers passed in the options hash
+   * @private
    */
   _getFullHeadersHash(headers) {
     const classHeaders = get(this, 'headers');
@@ -372,7 +391,8 @@ export default Mixin.create({
 
   /**
    * Return the response or handle the error
-   * @param response
+   * @method _handleResponse
+   * @param {object} response The response from the request
    * @param {object} requestOptions The options object containing headers, method, etc
    * @param {string} url The url for the request
    * @return {*}
@@ -388,6 +408,7 @@ export default Mixin.create({
 
   /**
    * Match the host to a provided array of strings or regexes that can match to a host
+   * @method _matchHosts
    * @param {string|undefined} host
    * @param {string} matcher
    * @private
@@ -411,33 +432,4 @@ export default Mixin.create({
     }
   }
 });
-
-function startsWithSlash(string) {
-  return string.charAt(0) === '/';
-}
-
-function endsWithSlash(string) {
-  return string.charAt(string.length - 1) === '/';
-}
-
-function removeLeadingSlash(string) {
-  return string.substring(1);
-}
-
-function removeTrailingSlash(string) {
-  return string.slice(0, -1);
-}
-
-function stripSlashes(path) {
-  // make sure path starts with `/`
-  if (startsWithSlash(path)) {
-    path = removeLeadingSlash(path);
-  }
-
-  // remove end `/`
-  if (endsWithSlash(path)) {
-    path = removeTrailingSlash(path);
-  }
-  return path;
-}
 

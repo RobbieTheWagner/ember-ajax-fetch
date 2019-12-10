@@ -75,6 +75,7 @@ export class ServerError extends FetchError {
 
 /**
  * Checks if the given error is or inherits from FetchError
+ * @function isFetchError
  */
 export function isFetchError(error) {
   return error instanceof FetchError;
@@ -82,6 +83,7 @@ export function isFetchError(error) {
 
 /**
  * Checks if the given object represents a "timeout" error
+ * @function isTimeoutError
  */
 export function isTimeoutError(error) {
   return error instanceof TimeoutError;
