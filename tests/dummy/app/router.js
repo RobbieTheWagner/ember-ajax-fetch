@@ -8,6 +8,7 @@ const Router = AddonDocsRouter.extend({
 
 Router.map(function() {
   docsRoute(this, function() {
+    this.route('abort');
     this.route('usage');
   });
 

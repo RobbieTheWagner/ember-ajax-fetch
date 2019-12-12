@@ -74,6 +74,10 @@ export default Mixin.create({
       }
     };
 
+    if(options.abortController instanceof AbortController) {
+      requestOptions.signal = options.abortController.signal
+    }
+
     let builtURL = hash.url;
     if (hash.data) {
       let { data } = hash;
