@@ -69,27 +69,35 @@ export default Mixin.create({
     const requestOptions = {
       method,
       headers: {
-        'Content-Type': hash.contentType,
         ...(hash.headers || {})
       }
     };
 
-    if(options.abortController instanceof AbortController) {
-      requestOptions.signal = options.abortController.signal
+    // If `contentType` is set to false, we want to not send anything and let the browser decide
+    if (options.contentType !== false) {
+      requestOptions['Content-Type'] = hash.contentType;
+    }
+
+    if (options.abortController instanceof AbortController) {
+      requestOptions.signal = options.abortController.signal;
     }
 
     let builtURL = hash.url;
     if (hash.data) {
       let { data } = hash;
 
-      if (isJsonString(data)) {
-        data = JSON.parse(data);
-      }
-
-      if (requestOptions.method === 'GET') {
-        builtURL = `${builtURL}?${param(data)}`;
+      if (options.processData === false) {
+        requestOptions.body = data;
       } else {
-        requestOptions.body = JSON.stringify(data);
+        if (isJsonString(data)) {
+          data = JSON.parse(data);
+        }
+
+        if (requestOptions.method === 'GET') {
+          builtURL = `${builtURL}?${param(data)}`;
+        } else {
+          requestOptions.body = JSON.stringify(data);
+        }
       }
     }
 
