@@ -23,6 +23,7 @@ export function isJsonString(str) {
  * @private
  */
 export async function parseJSON(response) {
+  const responseType = response.headers.get('content-type');
   let error;
 
   if (!response.ok) {
@@ -35,30 +36,52 @@ export async function parseJSON(response) {
   }
 
   return new Promise((resolve) => {
-    return response.json()
-      .then((json) => {
-        if (response.ok) {
+    if (responseType.includes('json')) {
+      return response.json()
+        .then((json) => {
+          if (response.ok) {
+            return resolve({
+              status: response.status,
+              ok: response.ok,
+              json
+            });
+          } else {
+            error = Object.assign({}, json, error);
+
+            return resolve(error);
+          }
+        })
+        .catch((err) => {
+          if (isJsonString(error.message)) {
+            error.payload = JSON.parse(error.message);
+          } else {
+            error.payload = error.message || err.toString();
+          }
+
+          error.message = error.message || err.toString();
+
+          return resolve(error);
+        });
+    } else {
+      return response.text()
+        .then((text) => {
           return resolve({
             status: response.status,
             ok: response.ok,
-            json
+            text
           });
-        } else {
-          error = Object.assign({}, json, error);
+        })
+        .catch((err) => {
+          if (isJsonString(error.message)) {
+            error.payload = JSON.parse(error.message);
+          } else {
+            error.payload = error.message || err.toString();
+          }
+
+          error.message = error.message || err.toString();
 
           return resolve(error);
-        }
-      })
-      .catch((err) => {
-        if (isJsonString(error.message)) {
-          error.payload = JSON.parse(error.message);
-        } else {
-          error.payload = error.message || err.toString();
-        }
-
-        error.message = error.message || err.toString();
-
-        return resolve(error);
-      });
+        });
+    }
   });
 }
