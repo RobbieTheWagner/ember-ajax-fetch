@@ -14,5 +14,8 @@ module.exports = {
   included() {
     this.import('node_modules/abortcontroller-polyfill/dist/abortcontroller-polyfill-only.js', { prepend: true });
     this._super.included.apply(this, arguments);
+  },
+  isDevelopingAddon() {
+    return true;
   }
 };

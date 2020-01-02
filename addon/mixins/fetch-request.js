@@ -75,7 +75,7 @@ export default Mixin.create({
 
     // If `contentType` is set to false, we want to not send anything and let the browser decide
     if (options.contentType !== false) {
-      requestOptions['Content-Type'] = hash.contentType;
+      requestOptions.headers['Content-Type'] = hash.contentType;
     }
 
     if (options.abortController instanceof AbortController) {
