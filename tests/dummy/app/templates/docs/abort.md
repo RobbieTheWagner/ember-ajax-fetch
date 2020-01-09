@@ -22,8 +22,8 @@ export default class FooRoute extends Route {
   model() { 
     const abortController = new AbortController();
     return this.fetch.request('/foo/bar', {
-      abortController,
-      data: queryParams
+      data: queryParams,
+      signal: abortController.signal
     });
   }
 }
