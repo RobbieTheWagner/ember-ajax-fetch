@@ -73,14 +73,13 @@ export default Mixin.create({
       }
     };
 
+    const abortController = new AbortController();
+    requestOptions.signal = abortController.signal;
+
     // If `contentType` is set to false, we want to not send anything and let the browser decide
     // We also want to ensure that no content-type was manually set on options.headers before overwriting it
     if (options.contentType !== false && isEmpty(requestOptions.headers['Content-Type'])) {
       requestOptions.headers['Content-Type'] = hash.contentType;
-    }
-
-    if (options.abortController instanceof AbortController) {
-      requestOptions.signal = options.abortController.signal;
     }
 
     let builtURL = hash.url;
@@ -103,7 +102,18 @@ export default Mixin.create({
     }
 
     try {
+      // Used to manually pass another AbortController signal in, for external aborting
+      if (options.signal) {
+        options.signal.addEventListener('abort', () => abortController.abort());
+      }
+      let timeout;
+      if (options.timeout) {
+        timeout = setTimeout(() => abortController.abort(), options.timeout);
+      }
       let response = await fetch(builtURL, requestOptions);
+      if (timeout) {
+        clearTimeout(timeout);
+      }
       response = await parseJSON(response);
 
       return this._handleResponse(response, requestOptions, builtURL);
