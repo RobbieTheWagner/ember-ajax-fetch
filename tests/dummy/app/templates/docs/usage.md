@@ -215,3 +215,16 @@ export default Route.extend({
 ```
 
 If your errors aren't standard, the helper function for that error type can be used as the base to build your custom detection function.
+
+## Options
+
+### timeout
+
+Timeouts are not supported by `fetch` by default, but using an `AbortController`, we 
+implemented support for them, so it's the same API as AJAX.
+
+```js
+this.fetch.request('/foo/bar', {
+ timeout: 500
+});
+```
