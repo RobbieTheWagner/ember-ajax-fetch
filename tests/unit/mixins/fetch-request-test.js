@@ -504,8 +504,8 @@ module('Unit | Mixin | fetch-request', function(hooks) {
     test('is set if the URL matches the host', function(assert) {
       this.server.get('http://example.com/test', req => {
         const { requestHeaders } = req;
-        assert.equal(requestHeaders['content-type'], 'application/json');
-        assert.equal(requestHeaders['other-key'], 'Other Value');
+        assert.equal(requestHeaders['Content-Type'], 'application/json');
+        assert.equal(requestHeaders['Other-key'], 'Other Value');
         return jsonResponse();
       });
 
@@ -524,8 +524,8 @@ module('Unit | Mixin | fetch-request', function(hooks) {
     test('is set if the URL is relative', function(assert) {
       this.server.get('/some/relative/url', req => {
         const { requestHeaders } = req;
-        assert.equal(requestHeaders['content-type'], 'application/json');
-        assert.equal(requestHeaders['other-key'], 'Other Value');
+        assert.equal(requestHeaders['Content-Type'], 'application/json');
+        assert.equal(requestHeaders['Other-key'], 'Other Value');
         return jsonResponse();
       });
 
@@ -543,7 +543,7 @@ module('Unit | Mixin | fetch-request', function(hooks) {
     test('is set if the URL matches one of the RegExp trustedHosts', function(assert) {
       this.server.get('http://my.example.com', req => {
         const { requestHeaders } = req;
-        assert.equal(requestHeaders['other-key'], 'Other Value');
+        assert.equal(requestHeaders['Other-key'], 'Other Value');
         return jsonResponse();
       });
 
@@ -563,7 +563,7 @@ module('Unit | Mixin | fetch-request', function(hooks) {
     test('is set if the URL matches one of the string trustedHosts', function(assert) {
       this.server.get('http://foo.bar.com', req => {
         const { requestHeaders } = req;
-        assert.equal(requestHeaders['other-key'], 'Other Value');
+        assert.equal(requestHeaders['Other-key'], 'Other Value');
         return jsonResponse();
       });
 
@@ -583,7 +583,7 @@ module('Unit | Mixin | fetch-request', function(hooks) {
     test('is not set if the URL does not match the host', function(assert) {
       this.server.get('http://example.com', req => {
         const { requestHeaders } = req;
-        assert.notEqual(requestHeaders['other-key'], 'Other Value');
+        assert.notEqual(requestHeaders['Other-key'], 'Other Value');
         return jsonResponse();
       });
 
@@ -602,8 +602,8 @@ module('Unit | Mixin | fetch-request', function(hooks) {
     test('can be supplied on a per-request basis', function(assert) {
       this.server.get('http://example.com', req => {
         const { requestHeaders } = req;
-        assert.equal(requestHeaders['per-request-key'], 'Some value');
-        assert.equal(requestHeaders['other-key'], 'Other Value');
+        assert.equal(requestHeaders['Per-Request-Key'], 'Some value');
+        assert.equal(requestHeaders['Other-key'], 'Other Value');
         return jsonResponse();
       });
 
