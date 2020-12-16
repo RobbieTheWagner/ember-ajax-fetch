@@ -24,9 +24,12 @@ module.exports = {
     FastBoot: false
   },
   rules: {
+    'ember/no-get': 'off',
     'ember/no-jquery': 'error',
+    'ember/no-mixins': 'off',
     'ember/no-new-mixins': 'off',
-    'no-console': 'off'
+    'no-console': 'off',
+    'no-useless-catch': 'off'
   },
   overrides: [
     // node files
