@@ -23,7 +23,7 @@ export function isJsonString(str) {
  * @private
  */
 export async function parseJSON(response) {
-  const responseType = response.headers.get('content-type');
+  const responseType = response.headers.get('content-type') || 'Empty Content-Type';
   let error;
 
   if (!response.ok) {
