@@ -1,3 +1,12 @@
+## v1.0.3 (2021-05-20)
+
+#### :house: Internal
+* [#22](https://github.com/expel-io/ember-ajax-fetch/pull/22) Use GitHub actions for CI ([@rwwagner90](https://github.com/rwwagner90))
+
+#### Committers: 2
+- Robert Wagner ([@rwwagner90](https://github.com/rwwagner90))
+- Scott Fisk ([@scottfisk](https://github.com/scottfisk))
+
 ## v1.0.2 (2020-12-04)
 
 
