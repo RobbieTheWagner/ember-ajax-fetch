@@ -57,13 +57,15 @@ export default Mixin.create({
   contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
 
   /**
-   * Make a fetch request
+   * Make a fetch request, returning the raw fetch response
+   *
+   * Unlike ember-ajax this method returns the raw fetch response not an xhr
    * @method request
    * @param {string} url The url for the request
    * @param {object} options The options hash for the request
-   * @return {Promise<*>}
+   * @return {object} containing {response, requestOptions, builtURL}
    */
-  async request(url, options = {}) {
+  async raw(url, options = {}) {
     const hash = this.options(url, options);
     const method = hash.method || hash.type || 'GET';
     const requestOptions = {
@@ -114,13 +116,27 @@ export default Mixin.create({
       if (timeout) {
         clearTimeout(timeout);
       }
-      response = await parseJSON(response);
 
-      return this._handleResponse(response, requestOptions, builtURL);
+      return {response, requestOptions, builtURL};
     } catch(error) {
       // TODO: do we want to just throw here or should some errors be okay?
       throw error;
     }
+  },
+
+  /**
+   * Make a fetch request, ignoring the raw fetch response and dealing only with
+   * the response content
+   * @method request
+   * @param {string} url The url for the request
+   * @param {object} options The options hash for the request
+   * @return {Promise<*>}
+   */
+  async request(url, options = {}) {
+    let {response, requestOptions, builtURL} = await this.raw(url, options);
+    response = await parseJSON(response);
+
+    return this._handleResponse(response, requestOptions, builtURL);
   },
 
   /**
