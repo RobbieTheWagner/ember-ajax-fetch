@@ -136,6 +136,15 @@ export default Mixin.create({
     let {response, requestOptions, builtURL} = await this.raw(url, options);
     response = await parseJSON(response);
 
+    if (!response) {
+      console.error({
+        url,
+        options,
+        requestOptions,
+        builtURL,
+      });
+    }
+
     return this._handleResponse(response, requestOptions, builtURL);
   },
 
