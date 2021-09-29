@@ -322,6 +322,39 @@ module('Unit | Mixin | fetch-request', function(hooks) {
     assert.equal(options.contentType, defaultContentType);
   });
 
+  test('raw() response.post === options.data.post', function(assert) {
+    const service = FetchRequest.create();
+    const url = '/posts';
+    const title = 'Title';
+    const description = 'Some description.';
+    const contentType = 'application/json';
+    const customHeader = 'My custom header';
+    const options = {
+      data: {
+        post: { title, description }
+      }
+    };
+    const serverResponse = [
+      200,
+      { 'Content-Type': contentType,
+        'Custom-Header': customHeader },
+      JSON.stringify(options.data)
+    ];
+
+    this.server.get(url, () => serverResponse);
+
+    const rawPromise = service.raw(url, options);
+
+    return rawPromise.then(function({ response }) {
+      assert.equal(response.status, 200);
+      assert.equal(response.headers.get('Custom-Header'), customHeader);
+      assert.equal(response.headers.get('Content-Type'), contentType);
+      return response.json();
+    }).then((json) => {
+      assert.deepEqual(json.post, options.data.post);
+    });
+  });
+
   test('post() response.post === options.data.post', function(assert) {
     const service = FetchRequest.create();
     const url = '/posts';
