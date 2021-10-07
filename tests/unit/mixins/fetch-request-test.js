@@ -1075,5 +1075,29 @@ module('Unit | Mixin | fetch-request', function(hooks) {
     errorHandlerTest(500, ServerError);
     errorHandlerTest(502, ServerError);
     errorHandlerTest(510, ServerError);
+
+    test(`handles response with malformed json`, function(assert) {
+      this.server.get(
+        '/posts',
+        () => [
+          200,
+          { 'Content-Type': 'application/json' },
+          "foobar"
+        ]
+      );
+      const service = FetchRequest.create();
+      return service
+        .request('/posts')
+        .then(function() {
+          throw new Error('success handler should not be called');
+        })
+        .catch(function(reason) {
+          assert.ok(reason.payload !== undefined);
+          assert.ok(reason.message.includes('Unexpected token'));
+          assert.ok(reason.message.includes('GET'));
+          assert.ok(reason.message.includes('/posts'));
+          assert.equal(reason.status, 200);
+        });
+    });
   });
 });

@@ -24,15 +24,14 @@ export function isJsonString(str) {
  */
 export async function parseJSON(response) {
   const responseType = response.headers.get('content-type') || 'Empty Content-Type';
-  let error;
+  let error = {
+    status: response.status,
+    statusText: response.statusText
+  };
 
   if (!response.ok) {
     const errorBody = await response.text();
-    error = {
-      message: errorBody,
-      status: response.status,
-      statusText: response.statusText
-    };
+    error.message = errorBody;
   }
 
   return new Promise((resolve) => {
