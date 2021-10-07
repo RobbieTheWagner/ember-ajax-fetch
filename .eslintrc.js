@@ -20,7 +20,7 @@ module.exports = {
     browser: true,
   },
   globals: {
-    FastBoot: false
+    FastBoot: false,
   },
   rules: {
     'ember/no-get': 'off',
@@ -28,7 +28,7 @@ module.exports = {
     'ember/no-mixins': 'off',
     'ember/no-new-mixins': 'off',
     'no-console': 'off',
-    'no-useless-catch': 'off'
+    'no-useless-catch': 'off',
   },
   overrides: [
     // node files

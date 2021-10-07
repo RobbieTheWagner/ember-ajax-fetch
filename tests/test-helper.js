@@ -5,7 +5,6 @@ import { setApplication } from '@ember/test-helpers';
 import { setup } from 'qunit-dom';
 import { start } from 'ember-qunit';
 
-import QUnit from 'qunit';
 import td from 'testdouble';
 import installVerifyAssertion from 'testdouble-qunit';
 

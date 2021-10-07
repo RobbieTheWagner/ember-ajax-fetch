@@ -15,7 +15,7 @@ import {
   isInvalidResponse,
   isNotFoundResponse,
   isServerErrorResponse,
-  isUnauthorizedResponse
+  isUnauthorizedResponse,
 } from 'ember-fetch/errors';
 import {
   FetchError,
@@ -27,7 +27,7 @@ import {
   GoneError,
   AbortError,
   ConflictError,
-  ServerError
+  ServerError,
 } from 'ember-ajax-fetch/errors';
 import {
   endsWithSlash,
@@ -37,10 +37,13 @@ import {
   removeLeadingSlash,
   removeTrailingSlash,
   startsWithSlash,
-  stripSlashes
+  stripSlashes,
 } from 'ember-ajax-fetch/-private/utils/url-helpers';
 import isString from 'ember-ajax-fetch/-private/utils/is-string';
-import { isJsonString, parseJSON } from 'ember-ajax-fetch/-private/utils/json-helpers';
+import {
+  isJsonString,
+  parseJSON,
+} from 'ember-ajax-fetch/-private/utils/json-helpers';
 
 /**
  * @class FetchRequestMixin
@@ -71,8 +74,8 @@ export default Mixin.create({
     const requestOptions = {
       method,
       headers: {
-        ...(hash.headers || {})
-      }
+        ...(hash.headers || {}),
+      },
     };
 
     const abortController = new AbortController();
@@ -80,7 +83,10 @@ export default Mixin.create({
 
     // If `contentType` is set to false, we want to not send anything and let the browser decide
     // We also want to ensure that no content-type was manually set on options.headers before overwriting it
-    if (options.contentType !== false && isEmpty(requestOptions.headers['Content-Type'])) {
+    if (
+      options.contentType !== false &&
+      isEmpty(requestOptions.headers['Content-Type'])
+    ) {
       requestOptions.headers['Content-Type'] = hash.contentType;
     }
 
@@ -117,8 +123,8 @@ export default Mixin.create({
         clearTimeout(timeout);
       }
 
-      return {response, requestOptions, builtURL};
-    } catch(error) {
+      return { response, requestOptions, builtURL };
+    } catch (error) {
       // TODO: do we want to just throw here or should some errors be okay?
       throw error;
     }
@@ -133,7 +139,7 @@ export default Mixin.create({
    * @return {Promise<*>}
    */
   async request(url, options = {}) {
-    let {response, requestOptions, builtURL} = await this.raw(url, options);
+    let { response, requestOptions, builtURL } = await this.raw(url, options);
     response = await parseJSON(response);
 
     return this._handleResponse(response, requestOptions, builtURL);
@@ -168,7 +174,7 @@ export default Mixin.create({
     if (!isFullURL(url)) {
       return true;
     } else if (
-      trustedHosts.find(matcher => this._matchHosts(hostname, matcher))
+      trustedHosts.find((matcher) => this._matchHosts(hostname, matcher))
     ) {
       return true;
     }
@@ -181,16 +187,9 @@ export default Mixin.create({
    * Generates a detailed ("friendly") error message, with plenty
    * of information for debugging (good luck!)
    */
-  generateDetailedMessage(
-    status,
-    payload,
-    contentType,
-    type,
-    url
-  ) {
+  generateDetailedMessage(status, payload, contentType, type, url) {
     let shortenedPayload;
-    const payloadContentType =
-      contentType || 'Empty Content-Type';
+    const payloadContentType = contentType || 'Empty Content-Type';
 
     if (
       payloadContentType.toLowerCase() === 'text/html' &&
@@ -207,7 +206,7 @@ export default Mixin.create({
     return [
       `Ember Ajax Fetch Request ${requestDescription} returned a ${status}`,
       payloadDescription,
-      shortenedPayload
+      shortenedPayload,
     ].join('\n');
   },
 
@@ -441,7 +440,12 @@ export default Mixin.create({
     if (response.ok) {
       return response.json;
     } else {
-      throw this._createCorrectError(response, response.payload, requestOptions, url);
+      throw this._createCorrectError(
+        response,
+        response.payload,
+        requestOptions,
+        url
+      );
     }
   },
 
@@ -469,6 +473,5 @@ export default Mixin.create({
       );
       return false;
     }
-  }
+  },
 });
-

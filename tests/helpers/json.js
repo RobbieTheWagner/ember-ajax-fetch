@@ -2,7 +2,7 @@ export function jsonResponse(status = 200, payload = {}) {
   return [
     status,
     { 'Content-Type': 'application/json' },
-    JSON.stringify(payload)
+    JSON.stringify(payload),
   ];
 }
 
