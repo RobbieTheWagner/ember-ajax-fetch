@@ -35,7 +35,7 @@ export function parseURL(str) {
     port: fullObject.port,
     pathname: fullObject.pathname,
     search: fullObject.search,
-    hash: fullObject.hash
+    hash: fullObject.hash,
   };
 
   return desiredProps;

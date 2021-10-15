@@ -6,16 +6,19 @@ module.exports = {
     autoImport: {
       webpack: {
         node: {
-          global: true
-        }
-      }
-    }
+          global: true,
+        },
+      },
+    },
   },
   included() {
-    this.import('node_modules/abortcontroller-polyfill/dist/abortcontroller-polyfill-only.js', { prepend: true });
+    this.import(
+      'node_modules/abortcontroller-polyfill/dist/abortcontroller-polyfill-only.js',
+      { prepend: true }
+    );
     this._super.included.apply(this, arguments);
   },
   isDevelopingAddon() {
     return true;
-  }
+  },
 };

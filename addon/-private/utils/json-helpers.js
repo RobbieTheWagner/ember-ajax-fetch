@@ -8,8 +8,8 @@
 export function isJsonString(str) {
   try {
     const json = JSON.parse(str);
-    return (typeof json === 'object');
-  } catch(e) {
+    return typeof json === 'object';
+  } catch (e) {
     return false;
   }
 }
@@ -23,10 +23,11 @@ export function isJsonString(str) {
  * @private
  */
 export async function parseJSON(response) {
-  const responseType = response.headers.get('content-type') || 'Empty Content-Type';
+  const responseType =
+    response.headers.get('content-type') || 'Empty Content-Type';
   let error = {
     status: response.status,
-    statusText: response.statusText
+    statusText: response.statusText,
   };
 
   if (!response.ok) {
@@ -36,13 +37,14 @@ export async function parseJSON(response) {
 
   return new Promise((resolve) => {
     if (responseType.includes('json')) {
-      return response.json()
+      return response
+        .json()
         .then((json) => {
           if (response.ok) {
             return resolve({
               status: response.status,
               ok: response.ok,
-              json
+              json,
             });
           } else {
             error = Object.assign({}, json, error);
@@ -62,12 +64,13 @@ export async function parseJSON(response) {
           return resolve(error);
         });
     } else {
-      return response.text()
+      return response
+        .text()
         .then((text) => {
           return resolve({
             status: response.status,
             ok: response.ok,
-            text
+            text,
           });
         })
         .catch((err) => {
