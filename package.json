@@ -33,7 +33,7 @@
     "abortcontroller-polyfill": "^1.5.0",
     "ember-auto-import": "^2.2.4",
     "ember-cli-babel": "^7.23.0",
-    "ember-cli-htmlbars": "^5.3.1",
+    "ember-cli-htmlbars": "^5.7.2",
     "ember-fetch": "^8.1.1",
     "jquery-param": "^1.1.3"
   },
