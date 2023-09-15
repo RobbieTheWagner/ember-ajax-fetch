@@ -3,7 +3,7 @@ ember-ajax-fetch
 
 This addon provides a `fetch` service that is meant to have the same API as 
 [ember-ajax](https://github.com/ember-cli/ember-ajax). It should be a drop in replacement
-when it is finished, and already handles a lot of things!
+when it is finished, and already handles a lot of things! 
 
 
 Compatibility
