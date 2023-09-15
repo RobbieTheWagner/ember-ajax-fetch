@@ -22,18 +22,6 @@ jobs:
       - run: yarn lint
       - run: yarn test:ember
 
-  floating-dependencies:
-    name: "Floating Dependencies"
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-      - uses: volta-cli/action@v1
-        with:
-          node-version: 12.x
-      - run: yarn install --no-lockfile
-      - run: yarn test:ember
-
   try-scenarios:
     name: "Try: ${{ matrix.ember-try-scenario }}"
 
