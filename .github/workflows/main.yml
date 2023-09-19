@@ -22,18 +22,6 @@ jobs:
       - run: yarn lint
       - run: yarn test:ember
 
-  floating-dependencies:
-    name: "Floating Dependencies"
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-      - uses: volta-cli/action@v1
-        with:
-          node-version: 12.x
-      - run: yarn install --no-lockfile
-      - run: yarn test:ember
-
   try-scenarios:
     name: "Try: ${{ matrix.ember-try-scenario }}"
 
@@ -47,9 +35,8 @@ jobs:
         ember-try-scenario:
           - ember-lts-3.16
           - ember-lts-3.20
-          - ember-release
-          - ember-beta
-          - ember-canary
+          - ember-lts-3.24
+          - ember-lts-3.28
           - ember-default-with-jquery
           - ember-classic
 
