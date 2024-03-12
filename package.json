@@ -85,7 +85,7 @@
     "webpack": "^5.90.3"
   },
   "engines": {
-    "node": "10.* || >= 12"
+    "node": "16.*"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
@@ -121,7 +121,7 @@
     "tunnel-agent": ">=0.6.0"
   },
   "volta": {
-    "node": "12.20.0",
+    "node": "^16",
     "yarn": "1.22.10"
   }
 }
