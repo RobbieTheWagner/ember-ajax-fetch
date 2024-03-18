@@ -17,13 +17,13 @@ jobs:
       - uses: actions/checkout@v2
       - uses: volta-cli/action@v1
         with:
-          node-version: 12.x
+          node-version: 16.x
       - run: yarn install --frozen-lockfile
       - run: yarn lint
       - run: yarn test:ember
 
   try-scenarios:
-    name: "Try: ${{ matrix.ember-try-scenario }}"
+    name: 'Try: ${{ matrix.ember-try-scenario }}'
 
     runs-on: ubuntu-latest
 
@@ -44,7 +44,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: volta-cli/action@v1
         with:
-          node-version: 12.x
+          node-version: 16.x
       - name: install dependencies
         run: yarn install --frozen-lockfile
       - name: test
