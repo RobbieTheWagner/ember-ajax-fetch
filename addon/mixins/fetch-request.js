@@ -1,5 +1,4 @@
 import { A } from '@ember/array';
-import EmberError from '@ember/error';
 import Mixin from '@ember/object/mixin';
 import { assign } from '@ember/polyfills';
 import { get } from '@ember/object';
@@ -394,7 +393,7 @@ export default Mixin.create({
    */
   get(url) {
     if (arguments.length > 1 || url.indexOf('/') !== -1) {
-      throw new EmberError(
+      throw new Error(
         'It seems you tried to use `.get` to make a request! Use the `.request` method instead.'
       );
     }
