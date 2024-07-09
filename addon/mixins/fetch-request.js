@@ -1,6 +1,5 @@
 import { A } from '@ember/array';
 import Mixin from '@ember/object/mixin';
-import { assign } from '@ember/polyfills';
 import { get } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 import fetch from 'fetch';
@@ -218,7 +217,7 @@ export default Mixin.create({
    * @return {object}
    */
   options(url, options = {}) {
-    options = assign({}, options);
+    options = Object.assign({}, options);
     options.url = this._buildURL(url, options);
     options.type = options.type || 'GET';
     options.dataType = options.dataType || 'json';
@@ -423,7 +422,7 @@ export default Mixin.create({
    */
   _getFullHeadersHash(headers) {
     const classHeaders = get(this, 'headers');
-    return assign({}, classHeaders, headers);
+    return Object.assign({}, classHeaders, headers);
   },
 
   /**
