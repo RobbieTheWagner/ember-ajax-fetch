@@ -24,7 +24,7 @@ ember install ember-ajax-fetch
 
 Docs
 ------------------------------------------------------------------------------
-[View the docs](https://expel-io.github.io/ember-ajax-fetch/)
+[View the docs](https://robbiethewagner.github.io/ember-ajax-fetch/)
 
 
 Contributing
