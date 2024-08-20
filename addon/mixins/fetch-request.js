@@ -1,7 +1,5 @@
 import { A } from '@ember/array';
-import EmberError from '@ember/error';
 import Mixin from '@ember/object/mixin';
-import { assign } from '@ember/polyfills';
 import { get } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 import fetch from 'fetch';
@@ -219,7 +217,7 @@ export default Mixin.create({
    * @return {object}
    */
   options(url, options = {}) {
-    options = assign({}, options);
+    options = Object.assign({}, options);
     options.url = this._buildURL(url, options);
     options.type = options.type || 'GET';
     options.dataType = options.dataType || 'json';
@@ -394,7 +392,7 @@ export default Mixin.create({
    */
   get(url) {
     if (arguments.length > 1 || url.indexOf('/') !== -1) {
-      throw new EmberError(
+      throw new Error(
         'It seems you tried to use `.get` to make a request! Use the `.request` method instead.'
       );
     }
@@ -424,7 +422,7 @@ export default Mixin.create({
    */
   _getFullHeadersHash(headers) {
     const classHeaders = get(this, 'headers');
-    return assign({}, classHeaders, headers);
+    return Object.assign({}, classHeaders, headers);
   },
 
   /**
