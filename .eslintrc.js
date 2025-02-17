@@ -61,6 +61,11 @@ module.exports = {
       // test files
       files: ['tests/**/*-test.{js,ts}'],
       extends: ['plugin:qunit/recommended'],
+      rules: {
+        'qunit/no-assert-logical-expression': 'off',
+        'qunit/no-commented-tests': 'off',
+        'qunit/require-expect': 'off',
+      },
     },
   ],
 };

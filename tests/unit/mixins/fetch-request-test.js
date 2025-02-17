@@ -135,7 +135,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
 
       const service = MonitorOptionsCalls.create();
       return service.request('/foo').then(function () {
-        assert.equal(numberOptionsCalls, 1);
+        assert.strictEqual(numberOptionsCalls, 1);
       });
     });
 
@@ -149,7 +149,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
         const url = '/users/me';
         const options = service.options(url);
 
-        assert.equal(options.url, 'https://discuss.emberjs.com/users/me');
+        assert.strictEqual(options.url, 'https://discuss.emberjs.com/users/me');
       });
 
       test('is set on the url (url not starting with `/`)', function (assert) {
@@ -161,7 +161,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
         const url = 'users/me';
         const options = service.options(url);
 
-        assert.equal(options.url, 'https://discuss.emberjs.com/users/me');
+        assert.strictEqual(options.url, 'https://discuss.emberjs.com/users/me');
       });
 
       test('is overridable on a per-request basis', function (assert) {
@@ -174,7 +174,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
         const host = 'https://myurl.com';
         const options = service.options(url, { host });
 
-        assert.equal(options.url, 'https://myurl.com/users/me');
+        assert.strictEqual(options.url, 'https://myurl.com/users/me');
       });
 
       test('is set on the namespace(namespace not starting with `/`)', function (assert) {
@@ -186,7 +186,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
         const url = 'users/me';
         const options = service.options(url);
 
-        assert.equal(
+        assert.strictEqual(
           options.url,
           'https://discuss.emberjs.com/api/v1/users/me'
         );
@@ -201,7 +201,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
         const url = 'users/me';
         const options = service.options(url);
 
-        assert.equal(
+        assert.strictEqual(
           options.url,
           'https://discuss.emberjs.com/api/v1/users/me'
         );
@@ -214,11 +214,11 @@ module('Unit | Mixin | fetch-request', function (hooks) {
         });
         const service = RequestWithHostAndNamespace.create();
 
-        assert.equal(
+        assert.strictEqual(
           service.options('/api/v1/users/me').url,
           'https://discuss.emberjs.com/api/v1/users/me'
         );
-        assert.equal(
+        assert.strictEqual(
           service.options('api/v1/users/me').url,
           'https://discuss.emberjs.com/api/v1/users/me'
         );
@@ -231,11 +231,11 @@ module('Unit | Mixin | fetch-request', function (hooks) {
         });
         const service = RequestWithHostAndNamespace.create();
 
-        assert.equal(
+        assert.strictEqual(
           service.options('/api/v1/users/me').url,
           'https://discuss.emberjs.com/api/v1/users/me'
         );
-        assert.equal(
+        assert.strictEqual(
           service.options('api/v1/users/me').url,
           'https://discuss.emberjs.com/api/v1/users/me'
         );
@@ -249,7 +249,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
         const url = 'users/me';
         const options = service.options(url);
 
-        assert.equal(options.url, '//users/me');
+        assert.strictEqual(options.url, '//users/me');
       });
 
       test('is set with the host address as `//` and url starting with `/`', function (assert) {
@@ -260,7 +260,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
         const url = '/users/me';
         const options = service.options(url);
 
-        assert.equal(options.url, '//users/me');
+        assert.strictEqual(options.url, '//users/me');
       });
     });
 
@@ -272,18 +272,21 @@ module('Unit | Mixin | fetch-request', function (hooks) {
 
         const service = RequestWithHost.create();
 
-        assert.equal(service.options('/users/me').url, '/api/v1/users/me');
-        assert.equal(service.options('users/me').url, '/api/v1/users/me');
+        assert.strictEqual(
+          service.options('/users/me').url,
+          '/api/v1/users/me'
+        );
+        assert.strictEqual(service.options('users/me').url, '/api/v1/users/me');
       });
 
       test('can be set on a per-request basis', function (assert) {
         const service = FetchRequest.create();
 
-        assert.equal(
+        assert.strictEqual(
           service.options('users/me', { namespace: '/api' }).url,
           '/api/users/me'
         );
-        assert.equal(
+        assert.strictEqual(
           service.options('users/me', { namespace: 'api' }).url,
           'api/users/me'
         );
@@ -296,8 +299,8 @@ module('Unit | Mixin | fetch-request', function (hooks) {
 
         const service = RequestWithHost.create();
 
-        assert.equal(service.options('/users/me').url, 'api/v1/users/me');
-        assert.equal(service.options('users/me').url, 'api/v1/users/me');
+        assert.strictEqual(service.options('/users/me').url, 'api/v1/users/me');
+        assert.strictEqual(service.options('users/me').url, 'api/v1/users/me');
       });
     });
 
@@ -307,7 +310,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
         const url = 'test';
         const options = service.options(url);
 
-        assert.equal(options.type, 'GET');
+        assert.strictEqual(options.type, 'GET');
       });
     });
   });
@@ -323,7 +326,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
 
     const service = FetchServiceWithDefaultContentType.create();
     const options = service.options('');
-    assert.equal(options.contentType, defaultContentType);
+    assert.strictEqual(options.contentType, defaultContentType);
   });
 
   test('raw() response.post === options.data.post', function (assert) {
@@ -350,9 +353,9 @@ module('Unit | Mixin | fetch-request', function (hooks) {
 
     return rawPromise
       .then(function ({ response }) {
-        assert.equal(response.status, 200);
-        assert.equal(response.headers.get('Custom-Header'), customHeader);
-        assert.equal(response.headers.get('Content-Type'), contentType);
+        assert.strictEqual(response.status, 200);
+        assert.strictEqual(response.headers.get('Custom-Header'), customHeader);
+        assert.strictEqual(response.headers.get('Content-Type'), contentType);
         return response.json();
       })
       .then((json) => {
@@ -511,7 +514,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
       const url = 'http://myurl.com/users/me';
       const options = service.options(url);
 
-      assert.equal(options.url, 'http://myurl.com/users/me');
+      assert.strictEqual(options.url, 'http://myurl.com/users/me');
     });
 
     test('overrides host property in request config', function (assert) {
@@ -520,7 +523,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
       const url = 'http://myurl.com/users/me';
       const options = service.options(url, { host });
 
-      assert.equal(options.url, 'http://myurl.com/users/me');
+      assert.strictEqual(options.url, 'http://myurl.com/users/me');
     });
 
     test('without a protocol does not override config property', function (assert) {
@@ -532,7 +535,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
       const url = 'myurl.com/users/me';
       const options = service.options(url);
 
-      assert.equal(
+      assert.strictEqual(
         options.url,
         'https://discuss.emberjs.com/myurl.com/users/me'
       );
@@ -543,8 +546,8 @@ module('Unit | Mixin | fetch-request', function (hooks) {
     test('is set if the URL matches the host', function (assert) {
       this.server.get('http://example.com/test', (req) => {
         const { requestHeaders } = req;
-        assert.equal(requestHeaders['Content-Type'], 'application/json');
-        assert.equal(requestHeaders['Other-key'], 'Other Value');
+        assert.strictEqual(requestHeaders['Content-Type'], 'application/json');
+        assert.strictEqual(requestHeaders['Other-key'], 'Other Value');
         return jsonResponse();
       });
 
@@ -563,8 +566,8 @@ module('Unit | Mixin | fetch-request', function (hooks) {
     test('is set if the URL is relative', function (assert) {
       this.server.get('/some/relative/url', (req) => {
         const { requestHeaders } = req;
-        assert.equal(requestHeaders['Content-Type'], 'application/json');
-        assert.equal(requestHeaders['Other-key'], 'Other Value');
+        assert.strictEqual(requestHeaders['Content-Type'], 'application/json');
+        assert.strictEqual(requestHeaders['Other-key'], 'Other Value');
         return jsonResponse();
       });
 
@@ -582,7 +585,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
     test('is set if the URL matches one of the RegExp trustedHosts', function (assert) {
       this.server.get('http://my.example.com', (req) => {
         const { requestHeaders } = req;
-        assert.equal(requestHeaders['Other-key'], 'Other Value');
+        assert.strictEqual(requestHeaders['Other-key'], 'Other Value');
         return jsonResponse();
       });
 
@@ -602,7 +605,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
     test('is set if the URL matches one of the string trustedHosts', function (assert) {
       this.server.get('http://foo.bar.com', (req) => {
         const { requestHeaders } = req;
-        assert.equal(requestHeaders['Other-key'], 'Other Value');
+        assert.strictEqual(requestHeaders['Other-key'], 'Other Value');
         return jsonResponse();
       });
 
@@ -641,8 +644,8 @@ module('Unit | Mixin | fetch-request', function (hooks) {
     test('can be supplied on a per-request basis', function (assert) {
       this.server.get('http://example.com', (req) => {
         const { requestHeaders } = req;
-        assert.equal(requestHeaders['Per-Request-Key'], 'Some value');
-        assert.equal(requestHeaders['Other-key'], 'Other Value');
+        assert.strictEqual(requestHeaders['Per-Request-Key'], 'Some value');
+        assert.strictEqual(requestHeaders['Other-key'], 'Other Value');
         return jsonResponse();
       });
 
@@ -672,9 +675,12 @@ module('Unit | Mixin | fetch-request', function (hooks) {
 
       const service = RequestWithHeaders.create();
       const headers = { 'Third-Value': 'Other Thing' };
-      assert.equal(Object.keys(service._getFullHeadersHash()).length, 2);
-      assert.equal(Object.keys(service._getFullHeadersHash(headers)).length, 3);
-      assert.equal(Object.keys(service.headers).length, 2);
+      assert.strictEqual(Object.keys(service._getFullHeadersHash()).length, 2);
+      assert.strictEqual(
+        Object.keys(service._getFullHeadersHash(headers)).length,
+        3
+      );
+      assert.strictEqual(Object.keys(service.headers).length, 2);
     });
   });
 
@@ -696,7 +702,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
         assert.ok(result.message.includes('Some error response'));
         assert.ok(result.message.includes('GET'));
         assert.ok(result.message.includes('/posts'));
-        assert.equal(result.status, 408);
+        assert.strictEqual(result.status, 408);
       });
   });
 
@@ -718,7 +724,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
         assert.ok(result.message.includes('Some error response'));
         assert.ok(result.message.includes('GET'));
         assert.ok(result.message.includes('/posts'));
-        assert.equal(result.status, 408);
+        assert.strictEqual(result.status, 408);
       });
   });
 
@@ -726,7 +732,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
     const service = FetchRequest.create();
     service.set('someProperty', 'foo');
 
-    assert.equal(service.get('someProperty'), 'foo');
+    assert.strictEqual(service.get('someProperty'), 'foo');
 
     assert.throws(function () {
       service.get('/users');
@@ -740,7 +746,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
   test('it JSON encodes JSON request data automatically per contentType', function (assert) {
     this.server.post('/test', ({ requestBody }) => {
       const { foo } = JSON.parse(requestBody);
-      assert.equal(foo, 'bar');
+      assert.strictEqual(foo, 'bar');
       return jsonResponse();
     });
 
@@ -759,7 +765,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
   test('it JSON encodes JSON:API request data automatically per contentType', function (assert) {
     this.server.post('/test', ({ requestBody }) => {
       const { foo } = JSON.parse(requestBody);
-      assert.equal(foo, 'bar');
+      assert.strictEqual(foo, 'bar');
       return jsonResponse();
     });
 
@@ -778,7 +784,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
   test('it JSON encodes JSON request data automatically per Content-Type header', function (assert) {
     this.server.post('/test', ({ requestBody }) => {
       const { foo } = JSON.parse(requestBody);
-      assert.equal(foo, 'bar');
+      assert.strictEqual(foo, 'bar');
       return jsonResponse();
     });
 
@@ -799,7 +805,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
   test('it JSON encodes JSON:API request data automatically per Content-Type header', function (assert) {
     this.server.post('/test', ({ requestBody }) => {
       const { foo } = JSON.parse(requestBody);
-      assert.equal(foo, 'bar');
+      assert.strictEqual(foo, 'bar');
       return jsonResponse();
     });
 
@@ -820,7 +826,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
   test('it does not JSON encode query parameters when JSON:API headers are present', function (assert) {
     this.server.get('/test', ({ queryParams }) => {
       const { foo } = queryParams;
-      assert.equal(foo, 'bar');
+      assert.strictEqual(foo, 'bar');
       return jsonResponse();
     });
 
@@ -841,7 +847,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
   test('it JSON encodes JSON:API "extension" request data automatically', function (assert) {
     this.server.post('/test', ({ requestBody }) => {
       const { foo } = JSON.parse(requestBody);
-      assert.equal(foo, 'bar');
+      assert.strictEqual(foo, 'bar');
       return jsonResponse();
     });
 
@@ -918,13 +924,13 @@ module('Unit | Mixin | fetch-request', function (hooks) {
 
         test(`correctly handles ${Klass.slashType} when the host has ${exampleHost.hostType}`, function (assert) {
           ['/baz', 'baz'].forEach((segment) => {
-            assert.equal(
+            assert.strictEqual(
               req._buildURL(segment, { host }),
               'http://foo.com/bar/baz'
             );
           });
           ['/baz/', 'baz/'].forEach((segment) => {
-            assert.equal(
+            assert.strictEqual(
               req._buildURL(segment, { host }),
               'http://foo.com/bar/baz/'
             );
@@ -935,7 +941,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
 
     test('correctly handles a host provided on the request options', function (assert) {
       const req = FetchRequest.create();
-      assert.equal(
+      assert.strictEqual(
         req._buildURL('/baz', { host: 'http://foo.com' }),
         'http://foo.com/baz'
       );
@@ -943,8 +949,8 @@ module('Unit | Mixin | fetch-request', function (hooks) {
 
     test('correctly handles no namespace or host', function (assert) {
       const req = FetchRequest.create();
-      assert.equal(req._buildURL('/baz'), '/baz');
-      assert.equal(req._buildURL('baz'), 'baz');
+      assert.strictEqual(req._buildURL('/baz'), '/baz');
+      assert.strictEqual(req._buildURL('baz'), 'baz');
     });
 
     test('does not build the URL if the namespace is already present', function (assert) {
@@ -955,12 +961,12 @@ module('Unit | Mixin | fetch-request', function (hooks) {
       }
 
       const req = RequestWithNamespace.create();
-      assert.equal(
+      assert.strictEqual(
         req._buildURL('/api/post'),
         '/api/post',
         'URL provided with leading slash'
       );
-      assert.equal(
+      assert.strictEqual(
         req._buildURL('api/post'),
         'api/post',
         'URL provided without leading slash'
@@ -975,7 +981,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
       }
 
       const req = RequestWithNamespace.create();
-      assert.equal(
+      assert.strictEqual(
         req._buildURL('/admin_users/post'),
         'admin/admin_users/post'
       );
@@ -990,7 +996,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
         }
 
         const req = RelativeNamespace.create();
-        assert.equal(req._buildURL('foobar'), 'api/v1/foobar');
+        assert.strictEqual(req._buildURL('foobar'), 'api/v1/foobar');
       });
 
       test('works with a relative namespace with a trailing slash', function (assert) {
@@ -1001,7 +1007,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
         }
 
         const req = RelativeNamespace.create();
-        assert.equal(req._buildURL('foobar'), 'api/v1/foobar');
+        assert.strictEqual(req._buildURL('foobar'), 'api/v1/foobar');
       });
     });
 
@@ -1014,7 +1020,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
         }
 
         const req = HostWithoutNamespace.create();
-        assert.equal(req._buildURL('baz'), 'http://foo.com/baz');
+        assert.strictEqual(req._buildURL('baz'), 'http://foo.com/baz');
       });
 
       test('does not build the URL if the host is already present', function (assert) {
@@ -1025,7 +1031,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
         }
 
         const req = RequestWithHost.create();
-        assert.equal(
+        assert.strictEqual(
           req._buildURL('https://foo.com/posts'),
           'https://foo.com/posts'
         );
@@ -1044,8 +1050,8 @@ module('Unit | Mixin | fetch-request', function (hooks) {
     //     })
     //     .catch(function(reason) {
     //       assert.ok(isTimeoutError(reason));
-    //       assert.equal(reason.payload, null);
-    //       assert.equal(reason.status, -1);
+    //       assert.strictEqual(reason.payload, null);
+    //       assert.strictEqual(reason.status, -1);
     //     });
     // });
 
@@ -1065,14 +1071,14 @@ module('Unit | Mixin | fetch-request', function (hooks) {
           })
           .catch(function (reason) {
             assert.ok(reason instanceof errorClass);
-            assert.ok(reason.payload !== undefined);
-            assert.equal(reason.status, status);
+            assert.notStrictEqual(reason.payload, undefined);
+            assert.strictEqual(reason.status, status);
 
             const { errors } = reason.payload;
 
             assert.ok(errors && typeOf(errors) === 'array');
-            assert.equal(errors[0].id, 1);
-            assert.equal(errors[0].message, 'error description');
+            assert.strictEqual(errors[0].id, 1);
+            assert.strictEqual(errors[0].message, 'error description');
           });
       });
     }
@@ -1100,11 +1106,11 @@ module('Unit | Mixin | fetch-request', function (hooks) {
           throw new Error('success handler should not be called');
         })
         .catch(function (reason) {
-          assert.ok(reason.payload !== undefined);
+          assert.notStrictEqual(reason.payload, undefined);
           assert.ok(reason.message.includes('Unexpected token'));
           assert.ok(reason.message.includes('GET'));
           assert.ok(reason.message.includes('/posts'));
-          assert.equal(reason.status, 200);
+          assert.strictEqual(reason.status, 200);
         });
     });
   });
