@@ -24,7 +24,7 @@ export class ForbiddenError extends FetchError {
     super(
       payload,
       'Request was rejected because user is not permitted to perform this operation.',
-      403
+      403,
     );
   }
 }

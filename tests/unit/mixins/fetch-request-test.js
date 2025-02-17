@@ -188,7 +188,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
 
         assert.strictEqual(
           options.url,
-          'https://discuss.emberjs.com/api/v1/users/me'
+          'https://discuss.emberjs.com/api/v1/users/me',
         );
       });
 
@@ -203,7 +203,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
 
         assert.strictEqual(
           options.url,
-          'https://discuss.emberjs.com/api/v1/users/me'
+          'https://discuss.emberjs.com/api/v1/users/me',
         );
       });
 
@@ -216,11 +216,11 @@ module('Unit | Mixin | fetch-request', function (hooks) {
 
         assert.strictEqual(
           service.options('/api/v1/users/me').url,
-          'https://discuss.emberjs.com/api/v1/users/me'
+          'https://discuss.emberjs.com/api/v1/users/me',
         );
         assert.strictEqual(
           service.options('api/v1/users/me').url,
-          'https://discuss.emberjs.com/api/v1/users/me'
+          'https://discuss.emberjs.com/api/v1/users/me',
         );
       });
 
@@ -233,11 +233,11 @@ module('Unit | Mixin | fetch-request', function (hooks) {
 
         assert.strictEqual(
           service.options('/api/v1/users/me').url,
-          'https://discuss.emberjs.com/api/v1/users/me'
+          'https://discuss.emberjs.com/api/v1/users/me',
         );
         assert.strictEqual(
           service.options('api/v1/users/me').url,
-          'https://discuss.emberjs.com/api/v1/users/me'
+          'https://discuss.emberjs.com/api/v1/users/me',
         );
       });
 
@@ -274,7 +274,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
 
         assert.strictEqual(
           service.options('/users/me').url,
-          '/api/v1/users/me'
+          '/api/v1/users/me',
         );
         assert.strictEqual(service.options('users/me').url, '/api/v1/users/me');
       });
@@ -284,11 +284,11 @@ module('Unit | Mixin | fetch-request', function (hooks) {
 
         assert.strictEqual(
           service.options('users/me', { namespace: '/api' }).url,
-          '/api/users/me'
+          '/api/users/me',
         );
         assert.strictEqual(
           service.options('users/me', { namespace: 'api' }).url,
-          'api/users/me'
+          'api/users/me',
         );
       });
 
@@ -537,7 +537,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
 
       assert.strictEqual(
         options.url,
-        'https://discuss.emberjs.com/myurl.com/users/me'
+        'https://discuss.emberjs.com/myurl.com/users/me',
       );
     });
   });
@@ -678,7 +678,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
       assert.strictEqual(Object.keys(service._getFullHeadersHash()).length, 2);
       assert.strictEqual(
         Object.keys(service._getFullHeadersHash(headers)).length,
-        3
+        3,
       );
       assert.strictEqual(Object.keys(service.headers).length, 2);
     });
@@ -926,13 +926,13 @@ module('Unit | Mixin | fetch-request', function (hooks) {
           ['/baz', 'baz'].forEach((segment) => {
             assert.strictEqual(
               req._buildURL(segment, { host }),
-              'http://foo.com/bar/baz'
+              'http://foo.com/bar/baz',
             );
           });
           ['/baz/', 'baz/'].forEach((segment) => {
             assert.strictEqual(
               req._buildURL(segment, { host }),
-              'http://foo.com/bar/baz/'
+              'http://foo.com/bar/baz/',
             );
           });
         });
@@ -943,7 +943,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
       const req = FetchRequest.create();
       assert.strictEqual(
         req._buildURL('/baz', { host: 'http://foo.com' }),
-        'http://foo.com/baz'
+        'http://foo.com/baz',
       );
     });
 
@@ -964,12 +964,12 @@ module('Unit | Mixin | fetch-request', function (hooks) {
       assert.strictEqual(
         req._buildURL('/api/post'),
         '/api/post',
-        'URL provided with leading slash'
+        'URL provided with leading slash',
       );
       assert.strictEqual(
         req._buildURL('api/post'),
         'api/post',
-        'URL provided without leading slash'
+        'URL provided without leading slash',
       );
     });
 
@@ -983,7 +983,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
       const req = RequestWithNamespace.create();
       assert.strictEqual(
         req._buildURL('/admin_users/post'),
-        'admin/admin_users/post'
+        'admin/admin_users/post',
       );
     });
 
@@ -1033,7 +1033,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
         const req = RequestWithHost.create();
         assert.strictEqual(
           req._buildURL('https://foo.com/posts'),
-          'https://foo.com/posts'
+          'https://foo.com/posts',
         );
       });
     });
@@ -1061,7 +1061,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
           '/posts',
           jsonFactory(status, {
             errors: [{ id: 1, message: 'error description' }],
-          })
+          }),
         );
         const service = FetchRequest.create();
         return service
