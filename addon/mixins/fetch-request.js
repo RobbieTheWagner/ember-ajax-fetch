@@ -316,7 +316,7 @@ export default Mixin.create({
         payload,
         requestOptions.headers['Content-Type'],
         requestOptions.method,
-        url
+        url,
       );
 
       error = new FetchError(payload, detailedMessage, response.status);
@@ -393,7 +393,7 @@ export default Mixin.create({
   get(url) {
     if (arguments.length > 1 || url.indexOf('/') !== -1) {
       throw new Error(
-        'It seems you tried to use `.get` to make a request! Use the `.request` method instead.'
+        'It seems you tried to use `.get` to make a request! Use the `.request` method instead.',
       );
     }
     return this._super(...arguments);
@@ -442,7 +442,7 @@ export default Mixin.create({
         response,
         response.payload,
         requestOptions,
-        url
+        url,
       );
     }
   },
@@ -467,7 +467,7 @@ export default Mixin.create({
       console.warn(
         'trustedHosts only handles strings or regexes. ',
         matcher,
-        ' is neither.'
+        ' is neither.',
       );
       return false;
     }

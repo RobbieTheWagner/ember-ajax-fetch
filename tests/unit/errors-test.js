@@ -170,19 +170,19 @@ module('Unit | Errors Test', function (hooks) {
     test('detects error code correctly', function (assert) {
       assert.notOk(
         isServerErrorResponse({ status: 499 }),
-        '499 is not a server error'
+        '499 is not a server error',
       );
       assert.ok(
         isServerErrorResponse({ status: 500 }),
-        '500 is a server error'
+        '500 is a server error',
       );
       assert.ok(
         isServerErrorResponse({ status: 599 }),
-        '599 is a server error'
+        '599 is a server error',
       );
       assert.notOk(
         isServerErrorResponse({ status: 600 }),
-        '600 is not a server error'
+        '600 is not a server error',
       );
     });
   });

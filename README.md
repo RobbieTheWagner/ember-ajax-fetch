@@ -1,39 +1,31 @@
-ember-ajax-fetch
-==============================================================================
+# ember-ajax-fetch
 
-This addon provides a `fetch` service that is meant to have the same API as 
+This addon provides a `fetch` service that is meant to have the same API as
 [ember-ajax](https://github.com/ember-cli/ember-ajax). It should be a drop in replacement
 when it is finished, and already handles a lot of things!
 
+## Compatibility
 
-Compatibility
-------------------------------------------------------------------------------
+- Ember.js v3.28 or above
+- Ember CLI v3.28 or above
+- Node.js v18 or above
 
-* Ember.js v3.16 or above
-* Ember CLI v2.13 or above
-* Node.js v10 or above
-
-
-Installation
-------------------------------------------------------------------------------
+## Installation
 
 ```
 ember install ember-ajax-fetch
 ```
 
+## Docs
 
-Docs
-------------------------------------------------------------------------------
+---
+
 [View the docs](https://robbiethewagner.github.io/ember-ajax-fetch/)
 
-
-Contributing
-------------------------------------------------------------------------------
+## Contributing
 
 See the [Contributing](CONTRIBUTING.md) guide for details.
 
-
-License
-------------------------------------------------------------------------------
+## License
 
 This project is licensed under the [MIT License](LICENSE.md).
