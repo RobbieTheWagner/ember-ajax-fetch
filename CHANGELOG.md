@@ -1,3 +1,22 @@
+
+## v2.0.0 (2025-02-18)
+
+#### :boom: Breaking Change
+* [#62](https://github.com/RobbieTheWagner/ember-ajax-fetch/pull/62) Require Ember 3.28+, node >= 18 ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
+#### :rocket: Enhancement
+* [#59](https://github.com/RobbieTheWagner/ember-ajax-fetch/pull/59) Remove deprecated `EmberError` and `assign` ([@wozny1989](https://github.com/wozny1989))
+
+#### Committers: 8
+- AJ McClure ([@audiocipher](https://github.com/audiocipher))
+- Adam Woźny ([@wozny1989](https://github.com/wozny1989))
+- Andrew Regan ([@andrew-regan-expel](https://github.com/andrew-regan-expel))
+- Camille TJHOA ([@ctjhoa](https://github.com/ctjhoa))
+- Daren McCulley ([@mcculleydj](https://github.com/mcculleydj))
+- Matthew Blasius ([@slickmb](https://github.com/slickmb))
+- Nabeel Zafar ([@nabeelz7](https://github.com/nabeelz7))
+- Robbie Wagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
 ## v1.0.3 (2021-05-20)
 
 #### :house: Internal
