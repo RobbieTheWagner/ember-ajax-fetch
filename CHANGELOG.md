@@ -1,4 +1,13 @@
 
+
+## v2.0.1 (2025-02-19)
+
+#### :bug: Bug Fix
+* [#60](https://github.com/RobbieTheWagner/ember-ajax-fetch/pull/60) Return text response ([@damatri](https://github.com/damatri))
+
+#### Committers: 1
+- [@damatri](https://github.com/damatri)
+
 ## v2.0.0 (2025-02-18)
 
 #### :boom: Breaking Change
