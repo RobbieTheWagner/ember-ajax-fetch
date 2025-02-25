@@ -436,7 +436,7 @@ export default Mixin.create({
    */
   _handleResponse(response, requestOptions, url) {
     if (response.ok) {
-      return response.text || response.json;
+      return response.text || response.json || response.buffer;
     } else {
       throw this._createCorrectError(
         response,

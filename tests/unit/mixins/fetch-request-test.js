@@ -1,6 +1,7 @@
 /* eslint-disable ember/avoid-leaking-state-in-ember-objects */
 import { A } from '@ember/array';
 import { typeOf } from '@ember/utils';
+import { encode as base64Encode } from 'base-64';
 import FetchRequest from 'ember-ajax-fetch/fetch-request';
 import Pretender from 'pretender';
 import { module, test } from 'qunit';
@@ -385,6 +386,26 @@ module('Unit | Mixin | fetch-request', function (hooks) {
 
     return postPromise.then(function (response) {
       assert.deepEqual(response.post, options.data.post);
+    });
+  });
+
+  test('post() application/zip response returns ArrayBuffer', function (assert) {
+    const service = FetchRequest.create();
+    const url = '/posts';
+    const dummyZipData = new Uint8Array([80, 75, 3, 4]);
+    const base64Zip = base64Encode(String.fromCharCode(...dummyZipData));
+    const serverResponse = [
+      200,
+      { 'Content-Type': 'application/zip' },
+      base64Zip,
+    ];
+
+    this.server.post(url, () => serverResponse);
+
+    const postPromise = service.post(url, {});
+
+    return postPromise.then(function (response) {
+      assert.ok(response instanceof ArrayBuffer, 'Response is an ArrayBuffer');
     });
   });
 

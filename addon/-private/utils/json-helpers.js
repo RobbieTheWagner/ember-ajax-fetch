@@ -1,3 +1,5 @@
+import { COMPRESSED_TYPES } from '../constants/response';
+
 /**
  * Determine if a string is JSON or not
  * @param {string} str The string to check for JSON formatting
@@ -63,6 +65,21 @@ export async function parseJSON(response) {
 
           return resolve(error);
         });
+    } else if (COMPRESSED_TYPES.includes(responseType)) {
+      return response
+        .arrayBuffer()
+        .then((buffer) => {
+          return resolve({
+            status: response.status,
+            ok: response.ok,
+            buffer,
+          });
+        })
+        .catch((err) => {
+          handleError(error, err);
+
+          return resolve(error);
+        });
     } else {
       return response
         .text()
@@ -74,16 +91,20 @@ export async function parseJSON(response) {
           });
         })
         .catch((err) => {
-          if (isJsonString(error.message)) {
-            error.payload = JSON.parse(error.message);
-          } else {
-            error.payload = error.message || err.toString();
-          }
-
-          error.message = error.message || err.toString();
+          handleError(error, err);
 
           return resolve(error);
         });
     }
   });
+}
+
+// Helper function to handle JSON parsing errors
+function handleError(error, err) {
+  if (isJsonString(error.message)) {
+    error.payload = JSON.parse(error.message);
+  } else {
+    error.payload = error.message || err.toString();
+  }
+  error.message = error.message || err.toString();
 }
