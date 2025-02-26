@@ -389,7 +389,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
     });
   });
 
-  test('post() application/zip response returns ArrayBuffer', function (assert) {
+  test('post() application/zip response returns Blob', function (assert) {
     const service = FetchRequest.create();
     const url = '/posts';
     const dummyZipData = new Uint8Array([80, 75, 3, 4]);
@@ -405,7 +405,7 @@ module('Unit | Mixin | fetch-request', function (hooks) {
     const postPromise = service.post(url, {});
 
     return postPromise.then(function (response) {
-      assert.ok(response instanceof ArrayBuffer, 'Response is an ArrayBuffer');
+      assert.ok(response instanceof Blob, 'Response is an ArrayBuffer');
     });
   });
 

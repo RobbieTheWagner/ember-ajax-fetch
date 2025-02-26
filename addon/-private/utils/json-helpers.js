@@ -67,12 +67,12 @@ export async function parseJSON(response) {
         });
     } else if (COMPRESSED_TYPES.includes(responseType)) {
       return response
-        .arrayBuffer()
-        .then((buffer) => {
+        .blob()
+        .then((blob) => {
           return resolve({
             status: response.status,
             ok: response.ok,
-            buffer,
+            blob,
           });
         })
         .catch((err) => {
