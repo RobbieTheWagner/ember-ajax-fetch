@@ -1,5 +1,14 @@
 
 
+
+## v2.1.0 (2025-03-26)
+
+#### :rocket: Enhancement
+* [#63](https://github.com/RobbieTheWagner/ember-ajax-fetch/pull/63) Add support for compressed types response ([@batrasaurabh90](https://github.com/batrasaurabh90))
+
+#### Committers: 1
+- Saurabh Batra ([@batrasaurabh90](https://github.com/batrasaurabh90))
+
 ## v2.0.1 (2025-02-19)
 
 #### :bug: Bug Fix
