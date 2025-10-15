@@ -88,8 +88,10 @@ export async function parseJSON(response) {
         })
         .catch((err) => {
           console.log(
-            `[DEBUG] ${traceId}: JSON parsing failed, error =`,
+            `[DEBUG] ${traceId}: JSON parsing failed, error message =`,
             err.message,
+            'full error =',
+            err,
           );
           if (isJsonString(error.message)) {
             error.payload = JSON.parse(error.message);
@@ -118,8 +120,10 @@ export async function parseJSON(response) {
         })
         .catch((err) => {
           console.log(
-            `[DEBUG] ${traceId}: Blob processing failed, error =`,
+            `[DEBUG] ${traceId}: Blob processing failed, error message =`,
             err.message,
+            'full error =',
+            err,
           );
           handleError(error, err, traceId);
 
@@ -142,8 +146,10 @@ export async function parseJSON(response) {
         })
         .catch((err) => {
           console.log(
-            `[DEBUG] ${traceId}: Text processing failed, error =`,
+            `[DEBUG] ${traceId}: Text processing failed, error message =`,
             err.message,
+            'full error =',
+            err,
           );
           handleError(error, err, traceId);
 
