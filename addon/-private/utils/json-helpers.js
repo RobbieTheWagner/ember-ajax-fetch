@@ -29,12 +29,15 @@ export async function parseJSON(response) {
   const traceId = `parseJSON_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
   console.log(`[DEBUG] ${traceId}: Starting response parsing`);
+
   console.log(`[DEBUG] ${traceId}: Response object:`, response);
+  console.log(`[DEBUG] ${traceId}: Response.bodyUsed :`, response.bodyUsed);
   console.log(`[DEBUG] ${traceId}: Response.ok =`, response.ok);
   console.log(`[DEBUG] ${traceId}: Response.status =`, response.status);
   console.log(`[DEBUG] ${traceId}: Response.statusText =`, response.statusText);
   console.log(`[DEBUG] ${traceId}: Response.type =`, response.type);
   console.log(`[DEBUG] ${traceId}: Response.url =`, response.url);
+  console.log(`[DEBUG] ${traceId}: Response.ok =`, response.body);
   console.log(`[DEBUG] ${traceId}: Response.headers =`, response.headers);
   console.log(
     `[DEBUG] ${traceId}: Content-Type header =`,
