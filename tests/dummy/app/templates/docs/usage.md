@@ -173,9 +173,8 @@ All of the above errors are subtypes of `FetchError`.
 
 #### Error detection helpers
 
-`ember-ajax-fetch` uses the helper functions from `ember-fetch` for matching response errors to their respective `ember-ajax-fetch` error type. 
 Each of the errors listed above has a corresponding `is*` function (e.g., `isBadRequestResponse`), which can be imported from
-`ember-fetch/errors`
+`ember-ajax-fetch/errors`
 
 Use of these functions is **strongly encouraged** to help eliminate the need for boilerplate error detection code.
 

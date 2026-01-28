@@ -5,17 +5,6 @@ import { isEmpty } from '@ember/utils';
 import fetch from 'fetch';
 import param from 'jquery-param';
 import {
-  isAbortError,
-  isBadRequestResponse,
-  isConflictResponse,
-  isForbiddenResponse,
-  isGoneResponse,
-  isInvalidResponse,
-  isNotFoundResponse,
-  isServerErrorResponse,
-  isUnauthorizedResponse,
-} from 'ember-fetch/errors';
-import {
   FetchError,
   UnauthorizedError,
   InvalidError,
@@ -26,6 +15,15 @@ import {
   AbortError,
   ConflictError,
   ServerError,
+  isAbortError,
+  isBadRequestResponse,
+  isConflictResponse,
+  isForbiddenResponse,
+  isGoneResponse,
+  isInvalidResponse,
+  isNotFoundResponse,
+  isServerErrorResponse,
+  isUnauthorizedResponse,
 } from 'ember-ajax-fetch/errors';
 import {
   endsWithSlash,

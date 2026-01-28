@@ -36,7 +36,6 @@
     "ember-auto-import": "^2.10.0",
     "ember-cli-babel": "^8.2.0",
     "ember-cli-htmlbars": "^6.3.0",
-    "ember-fetch": "^8.1.2",
     "jquery-param": "^1.2.4"
   },
   "devDependencies": {
