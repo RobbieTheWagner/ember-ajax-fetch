@@ -9,13 +9,13 @@ importers:
   .:
     dependencies:
       '@babel/core':
-        specifier: ^7.25.2
+        specifier: ^7.28.6
         version: 7.28.6
       abortcontroller-polyfill:
         specifier: ^1.7.8
         version: 1.7.8
       ember-auto-import:
-        specifier: ^2.10.0
+        specifier: ^2.12.0
         version: 2.12.0(webpack@5.104.1)
       ember-cli-babel:
         specifier: ^8.2.0
@@ -28,16 +28,16 @@ importers:
         version: 1.2.4
     devDependencies:
       '@babel/eslint-parser':
-        specifier: ^7.26.8
+        specifier: ^7.28.6
         version: 7.28.6(@babel/core@7.28.6)(eslint@8.57.1)
       '@babel/plugin-proposal-decorators':
-        specifier: ^7.25.9
+        specifier: ^7.28.6
         version: 7.28.6(@babel/core@7.28.6)
       '@ember/optional-features':
-        specifier: ^2.2.0
+        specifier: ^2.3.0
         version: 2.3.0
       '@ember/string':
-        specifier: ^3.0.1
+        specifier: ^3.1.1
         version: 3.1.1
       '@ember/test-helpers':
         specifier: ^3.3.1
@@ -103,10 +103,10 @@ importers:
         specifier: ^2.1.2
         version: 2.1.2(@babel/core@7.28.6)
       ember-page-title:
-        specifier: ^8.2.3
+        specifier: ^8.2.4
         version: 8.2.4(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.28.6))(rsvp@4.8.5)(webpack@5.104.1))
       ember-qunit:
-        specifier: ^8.1.0
+        specifier: ^8.1.1
         version: 8.1.1(@ember/test-helpers@3.3.1(@babel/core@7.28.6)(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.28.6))(rsvp@4.8.5)(webpack@5.104.1))(webpack@5.104.1))(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.28.6))(rsvp@4.8.5)(webpack@5.104.1))(qunit@2.25.0)
       ember-resolver:
         specifier: ^12.0.1
@@ -118,7 +118,7 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0(encoding@0.1.13)
       ember-template-lint:
-        specifier: ^6.0.0
+        specifier: ^6.1.0
         version: 6.1.0
       ember-try:
         specifier: ^3.0.0
@@ -127,19 +127,19 @@ importers:
         specifier: ^8.57.1
         version: 8.57.1
       eslint-config-prettier:
-        specifier: ^9.1.0
+        specifier: ^9.1.2
         version: 9.1.2(eslint@8.57.1)
       eslint-plugin-ember:
-        specifier: ^12.2.1
+        specifier: ^12.7.5
         version: 12.7.5(@babel/core@7.28.6)(eslint@8.57.1)(typescript@5.9.3)
       eslint-plugin-n:
         specifier: ^16.6.2
         version: 16.6.2(eslint@8.57.1)
       eslint-plugin-prettier:
-        specifier: ^5.2.1
+        specifier: ^5.5.5
         version: 5.5.5(@types/eslint@9.6.1)(eslint-config-prettier@9.1.2(eslint@8.57.1))(eslint@8.57.1)(prettier@3.8.1)
       eslint-plugin-qunit:
-        specifier: ^8.1.2
+        specifier: ^8.2.5
         version: 8.2.5(eslint@8.57.1)
       loader.js:
         specifier: ^4.7.0
@@ -148,13 +148,13 @@ importers:
         specifier: ^3.4.7
         version: 3.4.7
       prettier:
-        specifier: ^3.3.3
+        specifier: ^3.8.1
         version: 3.8.1
       qunit:
-        specifier: ^2.24.1
+        specifier: ^2.25.0
         version: 2.25.0
       qunit-dom:
-        specifier: ^3.2.1
+        specifier: ^3.5.0
         version: 3.5.0
       release-plan:
         specifier: ^0.17.4
@@ -175,7 +175,7 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       webpack:
-        specifier: ^5.98.0
+        specifier: ^5.104.1
         version: 5.104.1
 
 packages:
@@ -2826,8 +2826,8 @@ packages:
     resolution: {integrity: sha512-NIxF55hv4nSqQswkAeiOi1r83xy8JldOFDTWiug55KBu9Jnblncd2U6ViHmYgHf01TPZS77NJBhBMKdWj9HQMQ==}
     engines: {node: '>=8'}
 
-  ci-info@4.3.1:
-    resolution: {integrity: sha512-Wdy2Igu8OcBpI2pZePZ5oWjPC38tmDVx5WKUXKwlLYkA0ozo85sLsLvkBbBn/sZaSCMFOGZJ14fvW9t5/d7kdA==}
+  ci-info@4.4.0:
+    resolution: {integrity: sha512-77PSwercCZU2Fc4sX94eF8k8Pxte6JAwL4/ICZLFjJLqegs7kCuAsqqj/70NQF6TvDpgFjkubQB2FW2ZZddvQg==}
     engines: {node: '>=8'}
 
   cipher-base@1.0.7:
@@ -3637,8 +3637,8 @@ packages:
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
 
-  electron-to-chromium@1.5.279:
-    resolution: {integrity: sha512-0bblUU5UNdOt5G7XqGiJtpZMONma6WAfq9vsFmtn9x1+joAObr6x1chfqyxFSDCAFwFhCQDrqeAr6MYdpwJ9Hg==}
+  electron-to-chromium@1.5.283:
+    resolution: {integrity: sha512-3vifjt1HgrGW/h76UEeny+adYApveS9dH2h3p57JYzBSXJIKUJAvtmIytDKjcSCt9xHfrNCFJ7gts6vkhuq++w==}
 
   elliptic@6.6.1:
     resolution: {integrity: sha512-RaddvvMatK2LJHqFJ+YA4WysVN5Ita9E35botqIYspQ4TkRAlCicdzKOjlyv/1Za5RyTNn7di//eEV0uTAfe3g==}
@@ -12268,13 +12268,13 @@ snapshots:
   browserslist@3.2.8:
     dependencies:
       caniuse-lite: 1.0.30001766
-      electron-to-chromium: 1.5.279
+      electron-to-chromium: 1.5.283
 
   browserslist@4.28.1:
     dependencies:
       baseline-browser-mapping: 2.9.19
       caniuse-lite: 1.0.30001766
-      electron-to-chromium: 1.5.279
+      electron-to-chromium: 1.5.283
       node-releases: 2.0.27
       update-browserslist-db: 1.2.3(browserslist@4.28.1)
 
@@ -12524,7 +12524,7 @@ snapshots:
 
   ci-info@3.9.0: {}
 
-  ci-info@4.3.1: {}
+  ci-info@4.4.0: {}
 
   cipher-base@1.0.7:
     dependencies:
@@ -13209,7 +13209,7 @@ snapshots:
 
   ee-first@1.1.1: {}
 
-  electron-to-chromium@1.5.279: {}
+  electron-to-chromium@1.5.283: {}
 
   elliptic@6.6.1:
     dependencies:
@@ -14310,7 +14310,7 @@ snapshots:
       '@lint-todo/utils': 13.1.1
       aria-query: 5.3.2
       chalk: 5.6.2
-      ci-info: 4.3.1
+      ci-info: 4.4.0
       date-fns: 3.6.0
       ember-template-imports: 3.4.2
       ember-template-recast: 6.1.5
