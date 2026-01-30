@@ -88,3 +88,75 @@ export function isFetchError(error) {
 export function isTimeoutError(error) {
   return error instanceof TimeoutError;
 }
+
+/**
+ * Checks if the given response represents an unauthorized request error
+ * @function isUnauthorizedResponse
+ */
+export function isUnauthorizedResponse(response) {
+  return response.status === 401;
+}
+
+/**
+ * Checks if the given response represents a forbidden request error
+ * @function isForbiddenResponse
+ */
+export function isForbiddenResponse(response) {
+  return response.status === 403;
+}
+
+/**
+ * Checks if the given response represents an invalid request error
+ * @function isInvalidResponse
+ */
+export function isInvalidResponse(response) {
+  return response.status === 422;
+}
+
+/**
+ * Checks if the given response represents a bad request error
+ * @function isBadRequestResponse
+ */
+export function isBadRequestResponse(response) {
+  return response.status === 400;
+}
+
+/**
+ * Checks if the given response represents a "not found" error
+ * @function isNotFoundResponse
+ */
+export function isNotFoundResponse(response) {
+  return response.status === 404;
+}
+
+/**
+ * Checks if the given response represents a "gone" error
+ * @function isGoneResponse
+ */
+export function isGoneResponse(response) {
+  return response.status === 410;
+}
+
+/**
+ * Checks if the given error is an "abort" error
+ * @function isAbortError
+ */
+export function isAbortError(error) {
+  return error.name == 'AbortError';
+}
+
+/**
+ * Checks if the given response represents a conflict error
+ * @function isConflictResponse
+ */
+export function isConflictResponse(response) {
+  return response.status === 409;
+}
+
+/**
+ * Checks if the given response represents a server error
+ * @function isServerErrorResponse
+ */
+export function isServerErrorResponse(response) {
+  return response.status >= 500 && response.status < 600;
+}

@@ -1,17 +1,6 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import {
-  isAbortError,
-  isBadRequestResponse,
-  isConflictResponse,
-  isForbiddenResponse,
-  isGoneResponse,
-  isInvalidResponse,
-  isNotFoundResponse,
-  isServerErrorResponse,
-  isUnauthorizedResponse,
-} from 'ember-fetch/errors';
-import {
   FetchError,
   InvalidError,
   UnauthorizedError,
@@ -24,6 +13,15 @@ import {
   AbortError,
   ConflictError,
   isFetchError,
+  isAbortError,
+  isBadRequestResponse,
+  isConflictResponse,
+  isForbiddenResponse,
+  isGoneResponse,
+  isInvalidResponse,
+  isNotFoundResponse,
+  isServerErrorResponse,
+  isUnauthorizedResponse,
 } from 'ember-ajax-fetch/errors';
 
 module('Unit | Errors Test', function (hooks) {

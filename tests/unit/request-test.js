@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
-import { isNotFoundResponse } from 'ember-fetch/errors';
+import { isNotFoundResponse } from 'ember-ajax-fetch/errors';
 import Pretender from 'pretender';
 import request from 'ember-ajax-fetch/request';
 
