@@ -2,7 +2,6 @@ import { A } from '@ember/array';
 import Mixin from '@ember/object/mixin';
 import { get } from '@ember/object';
 import { isEmpty } from '@ember/utils';
-import fetch from 'fetch';
 import param from 'jquery-param';
 import {
   FetchError,
