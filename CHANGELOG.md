@@ -2,6 +2,17 @@
 
 ## Release (2026-01-30)
 
+* ember-ajax-fetch 2.2.2 (patch)
+
+#### :memo: Documentation
+* `ember-ajax-fetch`
+  * [#71](https://github.com/RobbieTheWagner/ember-ajax-fetch/pull/71) Update ember-cli-addon-docs to v7 ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
+#### Committers: 1
+- Robbie Wagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
+## Release (2026-01-30)
+
 * ember-ajax-fetch 2.2.1 (patch)
 
 #### :house: Internal

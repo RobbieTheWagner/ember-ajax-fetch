@@ -2,17 +2,17 @@
   "solution": {
     "ember-ajax-fetch": {
       "impact": "patch",
-      "oldVersion": "2.2.0",
-      "newVersion": "2.2.1",
+      "oldVersion": "2.2.1",
+      "newVersion": "2.2.2",
       "tagName": "latest",
       "constraints": [
         {
           "impact": "patch",
-          "reason": "Appears in changelog section :house: Internal"
+          "reason": "Appears in changelog section :memo: Documentation"
         }
       ],
       "pkgJSONPath": "./package.json"
     }
   },
-  "description": "## Release (2026-01-30)\n\n* ember-ajax-fetch 2.2.1 (patch)\n\n#### :house: Internal\n* `ember-ajax-fetch`\n  * [#69](https://github.com/RobbieTheWagner/ember-ajax-fetch/pull/69) expel-io -> RobbieTheWagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))\n\n#### Committers: 1\n- Robbie Wagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))\n"
+  "description": "## Release (2026-01-30)\n\n* ember-ajax-fetch 2.2.2 (patch)\n\n#### :memo: Documentation\n* `ember-ajax-fetch`\n  * [#71](https://github.com/RobbieTheWagner/ember-ajax-fetch/pull/71) Update ember-cli-addon-docs to v7 ([@RobbieTheWagner](https://github.com/RobbieTheWagner))\n\n#### Committers: 1\n- Robbie Wagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))\n"
 }
