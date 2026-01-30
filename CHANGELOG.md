@@ -1,5 +1,21 @@
 # Changelog
 
+## Release (2026-01-30)
+
+* ember-ajax-fetch 2.2.0 (minor)
+
+#### :rocket: Enhancement
+* `ember-ajax-fetch`
+  * [#66](https://github.com/RobbieTheWagner/ember-ajax-fetch/pull/66) remove ember-fetch dependency ([@miguelcobain](https://github.com/miguelcobain))
+
+#### :house: Internal
+* `ember-ajax-fetch`
+  * [#67](https://github.com/RobbieTheWagner/ember-ajax-fetch/pull/67) Add release-plan ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
+#### Committers: 2
+- Miguel Andrade ([@miguelcobain](https://github.com/miguelcobain))
+- Robbie Wagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
 
 
 
