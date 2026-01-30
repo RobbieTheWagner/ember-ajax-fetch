@@ -1,9 +1,9 @@
 <DocsViewer as |viewer|>
   <viewer.nav as |nav|>
-    {{nav.section "Introduction"}}
-    {{nav.item "Introduction" "docs.index"}}
-    {{nav.item "Usage" "docs.usage"}}
-    {{nav.item "Aborting Requests" "docs.abort"}}
+    <nav.section @label="Introduction"/>
+    <nav.item @label="Introduction" @route="docs.index"/>
+    <nav.item @label="Usage" @route="docs.usage"/>
+    <nav.item @label="Aborting Requests" @route="docs.abort"/>
   </viewer.nav>
 
   <viewer.main>
