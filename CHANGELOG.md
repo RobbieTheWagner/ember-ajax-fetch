@@ -2,6 +2,17 @@
 
 ## Release (2026-01-30)
 
+* ember-ajax-fetch 2.2.1 (patch)
+
+#### :house: Internal
+* `ember-ajax-fetch`
+  * [#69](https://github.com/RobbieTheWagner/ember-ajax-fetch/pull/69) expel-io -> RobbieTheWagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
+#### Committers: 1
+- Robbie Wagner ([@RobbieTheWagner](https://github.com/RobbieTheWagner))
+
+## Release (2026-01-30)
+
 * ember-ajax-fetch 2.2.0 (minor)
 
 #### :rocket: Enhancement
