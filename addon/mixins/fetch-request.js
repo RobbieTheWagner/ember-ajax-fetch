@@ -78,10 +78,10 @@ export default Mixin.create({
 
     // If `contentType` is set to false, we want to not send anything and let the browser decide
     // We also want to ensure that no content-type was manually set on options.headers before overwriting it
-    if (
-      options.contentType !== false &&
-      isEmpty(requestOptions.headers['Content-Type'])
-    ) {
+    const hasContentType = Object.keys(requestOptions.headers).some(
+      (header) => header.toLowerCase() === 'content-type',
+    );
+    if (options.contentType !== false && !hasContentType) {
       requestOptions.headers['Content-Type'] = hash.contentType;
     }
 
